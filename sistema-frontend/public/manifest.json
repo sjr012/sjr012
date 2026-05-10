@@ -1,0 +1,22 @@
+{
+  "short_name": "SYSTEC",
+  "name": "SYSTEC - Sistema de Ordem de Serviço",
+  "description": "Sistema web para gerenciamento de ordens de serviço.",
+  "icons": [
+    {
+      "src": "logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0f2a5f",
+  "background_color": "#f4f7fb"
+}
