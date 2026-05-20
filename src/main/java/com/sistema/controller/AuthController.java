@@ -35,6 +35,6 @@ public class AuthController {
                     String token = jwtService.gerarToken(usuario);
                     return ResponseEntity.ok(new LoginResponse(token, usuario));
                 })
-                .orElse(ResponseEntity.status(401).body("Login inválido"));
+                .orElse(ResponseEntity.status(401).body("Login errado"));
     }
 }
