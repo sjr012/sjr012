@@ -31,7 +31,7 @@ function Login() {
 
         toast.success("Login realizado com sucesso!");
 
-        window.location.href = "/dashboard";
+        navigate("/dashboard");
     };
 
     return (
