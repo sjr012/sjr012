@@ -31,9 +31,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Usuario u) {
 
         return repo.findByLogin(u.getLogin())
-                .filter(usuario -> passwordEncoder.matches(
-                        u.getSenha(),
-                        usuario.getSenha()))
+                .filter(usuario -> u.getSenha().equals(usuario.getSenha()))
                 .<ResponseEntity<?>>map(usuario -> {
 
                     String token = jwtService.gerarToken(usuario);
