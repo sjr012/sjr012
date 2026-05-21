@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login").permitAll()
 
                         // Somente ADMIN
-                        .requestMatchers("/usuarios/**").authenticated()
+                        .requestMatchers("/usuarios/**").hasRole("ADMIN")
                         .requestMatchers("/clientes/**").hasRole("ADMIN")
                         .requestMatchers("/funcionarios/**").hasRole("ADMIN")
 
