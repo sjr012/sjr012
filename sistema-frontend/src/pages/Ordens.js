@@ -263,6 +263,8 @@ function Ordens() {
 
     const gerarPdfOrdem = async (ordem) => {
 
+        alert("PDF NOVO");
+
         const doc = new jsPDF();
 
         const urlOrdem =
