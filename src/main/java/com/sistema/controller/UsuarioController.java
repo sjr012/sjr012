@@ -48,7 +48,7 @@ public class UsuarioController {
         usuario.setTipo(dados.getTipo());
 
         if (dados.getSenha() != null && !dados.getSenha().isBlank()) {
-            usuario.setSenha(passwordEncoder.encode(dados.getSenha()));
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
 
         return ResponseEntity.ok(repo.save(usuario));
