@@ -45,7 +45,7 @@ function Dashboard() {
     const carregarDados = async () => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-        const ordensRes = await apifetch(`${API_URL}/ordens`, {
+        const ordensRes = await apiFetch(`${API_URL}/ordens`, {
             headers: getAuthHeaders()
         });
 
@@ -54,11 +54,11 @@ function Dashboard() {
         }
 
         if (usuario?.tipo === "ADMIN") {
-            const clientesRes = await apifetch(`${API_URL}/clientes`, {
+            const clientesRes = await apiFetch(`${API_URL}/clientes`, {
                 headers: getAuthHeaders()
             });
 
-            const funcionariosRes = await apifetch(`${API_URL}/funcionarios`, {
+            const funcionariosRes = await apiFetch(`${API_URL}/funcionarios`, {
                 headers: getAuthHeaders()
             });
 
