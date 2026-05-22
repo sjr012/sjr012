@@ -461,254 +461,255 @@ function Ordens() {
 
         const pdfUrl = URL.createObjectURL(pdfBlob);
 
-        window.open(pdfUrl, "_blank");
+        window.open(
+            pdfUrl,
+            "_blank"
+        );
     };
 
-};
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
+    const isAdmin = usuarioLogado?.tipo === "ADMIN";
 
-const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
-const isAdmin = usuarioLogado?.tipo === "ADMIN";
+    return (
+        <div>
+            <h1>Ordens de Serviço</h1>
 
-return (
-    <div>
-        <h1>Ordens de Serviço</h1>
+            {isAdmin && (
+                <section style={theme.panel}>
+                    <h2>
+                        {editando ? "Editar Ordem" : "Nova Ordem"}
+                    </h2>
 
-        {isAdmin && (
-            <section style={theme.panel}>
-                <h2>
-                    {editando ? "Editar Ordem" : "Nova Ordem"}
-                </h2>
+                    <input
+                        style={theme.input}
+                        placeholder="Descrição do problema"
+                        value={descricao}
+                        onChange={(e) => setDescricao(e.target.value)}
+                    />
 
-                <input
-                    style={theme.input}
-                    placeholder="Descrição do problema"
-                    value={descricao}
-                    onChange={(e) => setDescricao(e.target.value)}
-                />
-
-                <select
-                    style={theme.input}
-                    value={clienteId}
-                    onChange={(e) => setClienteId(e.target.value)}
-                >
-                    <option value="">Selecione o cliente</option>
-
-                    {clientes.map((cliente) => (
-                        <option key={cliente.id} value={cliente.id}>
-                            {cliente.nome}
-                        </option>
-                    ))}
-                </select>
-
-                <select
-                    style={theme.input}
-                    value={funcionarioId}
-                    onChange={(e) => setFuncionarioId(e.target.value)}
-                >
-                    <option value="">Selecione o funcionário</option>
-
-                    {funcionarios.map((funcionario) => (
-                        <option key={funcionario.id} value={funcionario.id}>
-                            {funcionario.nome}
-                        </option>
-                    ))}
-                </select>
-
-                <button style={theme.button} onClick={salvarOrdem}>
-                    {editando ? "Salvar Alterações" : "Abrir Ordem"}
-                </button>
-
-                {editando && (
-                    <button
-                        style={{
-                            ...theme.button,
-                            background: "#6c757d",
-                            marginTop: "10px"
-                        }}
-                        onClick={cancelarEdicao}
+                    <select
+                        style={theme.input}
+                        value={clienteId}
+                        onChange={(e) => setClienteId(e.target.value)}
                     >
-                        Cancelar Edição
-                    </button>
-                )}
-            </section>
-        )}
+                        <option value="">Selecione o cliente</option>
 
-        <section style={theme.panel}>
-            <h2>Ordens Cadastradas</h2>
-
-            {ordens.length === 0 ? (
-                <p>Nenhuma ordem cadastrada.</p>
-            ) : (
-                <table style={theme.table}>
-                    <thead>
-                        <tr>
-                            <th style={theme.th}>ID</th>
-
-                            <th style={theme.th}>Descrição</th>
-
-                            <th style={theme.th}>Status</th>
-
-                            <th style={theme.th}>Cliente</th>
-
-                            <th style={theme.th}>Funcionário</th>
-
-                            <th style={theme.th}>Abertura</th>
-
-                            <th style={theme.th}>Fechamento</th>
-
-                            <th style={theme.th}>Ação</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {ordens.map((ordem) => (
-                            <tr key={ordem.id}>
-
-                                <td style={theme.td}>
-                                    {ordem.id}
-                                </td>
-
-                                <td style={theme.td}>
-                                    {ordem.descricao}
-                                </td>
-
-                                <td style={theme.td}>
-                                    <span
-                                        style={
-                                            ordem.status === "FECHADA"
-                                                ? theme.statusFechada
-                                                : theme.statusAberta
-                                        }
-                                    >
-                                        {ordem.status}
-                                    </span>
-                                </td>
-
-                                <td style={theme.td}>
-                                    {ordem.cliente?.nome}
-                                </td>
-
-                                <td style={theme.td}>
-                                    {ordem.funcionario?.nome}
-                                </td>
-
-                                <td style={theme.td}>
-                                    {formatarDataHora(ordem.dataAbertura)}
-                                </td>
-
-                                <td style={theme.td}>
-                                    {ordem.dataFechamento
-                                        ? formatarDataHora(ordem.dataFechamento)
-                                        : "Em aberto"}
-                                </td>
-
-                                <td style={theme.td}>
-                                    <div style={styles.actionButtons}>
-                                        <button
-                                            style={theme.smallButton}
-                                            onClick={() => gerarPdfOrdem(ordem)}
-                                        >
-                                            PDF
-                                        </button>
-
-                                        <button
-                                            style={theme.smallButton}
-                                            onClick={() => carregarAnexos(ordem.id)}
-                                        >
-                                            Anexos
-                                        </button>
-
-                                        <button
-                                            style={theme.smallButton}
-                                            onClick={() => editarOrdem(ordem)}
-                                        >
-                                            Editar
-                                        </button>
-
-                                        <button
-                                            style={{
-                                                ...theme.smallButton,
-                                                background: "#d9534f"
-                                            }}
-                                            onClick={() => excluirOrdem(ordem.id)}
-                                        >
-                                            Excluir
-                                        </button>
-
-                                        {ordem.status !== "FECHADA" && (
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => fecharOrdem(ordem.id)}
-                                            >
-                                                Fechar
-                                            </button>
-                                        )}
-                                    </div>
-                                </td>
-
-                            </tr>
+                        {clientes.map((cliente) => (
+                            <option key={cliente.id} value={cliente.id}>
+                                {cliente.nome}
+                            </option>
                         ))}
-                    </tbody>
-                </table>
+                    </select>
+
+                    <select
+                        style={theme.input}
+                        value={funcionarioId}
+                        onChange={(e) => setFuncionarioId(e.target.value)}
+                    >
+                        <option value="">Selecione o funcionário</option>
+
+                        {funcionarios.map((funcionario) => (
+                            <option key={funcionario.id} value={funcionario.id}>
+                                {funcionario.nome}
+                            </option>
+                        ))}
+                    </select>
+
+                    <button style={theme.button} onClick={salvarOrdem}>
+                        {editando ? "Salvar Alterações" : "Abrir Ordem"}
+                    </button>
+
+                    {editando && (
+                        <button
+                            style={{
+                                ...theme.button,
+                                background: "#6c757d",
+                                marginTop: "10px"
+                            }}
+                            onClick={cancelarEdicao}
+                        >
+                            Cancelar Edição
+                        </button>
+                    )}
+                </section>
             )}
-        </section>
 
-        {ordemSelecionada && (
             <section style={theme.panel}>
-                <h2>Anexos da Ordem #{ordemSelecionada}</h2>
+                <h2>Ordens Cadastradas</h2>
 
-                <input
-                    style={theme.input}
-                    type="file"
-                    onChange={(e) => setArquivoSelecionado(e.target.files[0])}
-                />
-
-                <button style={theme.button} onClick={enviarAnexo}>
-                    Enviar Anexo
-                </button>
-
-                <h3 style={{ marginTop: "20px" }}>
-                    Arquivos anexados
-                </h3>
-
-                {anexos.length === 0 ? (
-                    <p>Nenhum anexo encontrado.</p>
+                {ordens.length === 0 ? (
+                    <p>Nenhuma ordem cadastrada.</p>
                 ) : (
                     <table style={theme.table}>
                         <thead>
                             <tr>
                                 <th style={theme.th}>ID</th>
-                                <th style={theme.th}>Arquivo</th>
-                                <th style={theme.th}>Tipo</th>
+
+                                <th style={theme.th}>Descrição</th>
+
+                                <th style={theme.th}>Status</th>
+
+                                <th style={theme.th}>Cliente</th>
+
+                                <th style={theme.th}>Funcionário</th>
+
+                                <th style={theme.th}>Abertura</th>
+
+                                <th style={theme.th}>Fechamento</th>
+
                                 <th style={theme.th}>Ação</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {anexos.map((anexo) => (
-                                <tr key={anexo.id}>
-                                    <td style={theme.td}>{anexo.id}</td>
-                                    <td style={theme.td}>{anexo.nomeArquivo}</td>
-                                    <td style={theme.td}>{anexo.tipoArquivo}</td>
+                            {ordens.map((ordem) => (
+                                <tr key={ordem.id}>
 
                                     <td style={theme.td}>
-                                        <button
-                                            style={theme.smallButton}
-                                            onClick={() =>
-                                                baixarAnexo(anexo.id, anexo.nomeArquivo)
+                                        {ordem.id}
+                                    </td>
+
+                                    <td style={theme.td}>
+                                        {ordem.descricao}
+                                    </td>
+
+                                    <td style={theme.td}>
+                                        <span
+                                            style={
+                                                ordem.status === "FECHADA"
+                                                    ? theme.statusFechada
+                                                    : theme.statusAberta
                                             }
                                         >
-                                            Baixar
-                                        </button>
+                                            {ordem.status}
+                                        </span>
                                     </td>
+
+                                    <td style={theme.td}>
+                                        {ordem.cliente?.nome}
+                                    </td>
+
+                                    <td style={theme.td}>
+                                        {ordem.funcionario?.nome}
+                                    </td>
+
+                                    <td style={theme.td}>
+                                        {formatarDataHora(ordem.dataAbertura)}
+                                    </td>
+
+                                    <td style={theme.td}>
+                                        {ordem.dataFechamento
+                                            ? formatarDataHora(ordem.dataFechamento)
+                                            : "Em aberto"}
+                                    </td>
+
+                                    <td style={theme.td}>
+                                        <div style={styles.actionButtons}>
+                                            <button
+                                                style={theme.smallButton}
+                                                onClick={() => gerarPdfOrdem(ordem)}
+                                            >
+                                                PDF
+                                            </button>
+
+                                            <button
+                                                style={theme.smallButton}
+                                                onClick={() => carregarAnexos(ordem.id)}
+                                            >
+                                                Anexos
+                                            </button>
+
+                                            <button
+                                                style={theme.smallButton}
+                                                onClick={() => editarOrdem(ordem)}
+                                            >
+                                                Editar
+                                            </button>
+
+                                            <button
+                                                style={{
+                                                    ...theme.smallButton,
+                                                    background: "#d9534f"
+                                                }}
+                                                onClick={() => excluirOrdem(ordem.id)}
+                                            >
+                                                Excluir
+                                            </button>
+
+                                            {ordem.status !== "FECHADA" && (
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() => fecharOrdem(ordem.id)}
+                                                >
+                                                    Fechar
+                                                </button>
+                                            )}
+                                        </div>
+                                    </td>
+
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
             </section>
-        )}
-    </div>
-);
 
-export default Ordens;
+            {ordemSelecionada && (
+                <section style={theme.panel}>
+                    <h2>Anexos da Ordem #{ordemSelecionada}</h2>
+
+                    <input
+                        style={theme.input}
+                        type="file"
+                        onChange={(e) => setArquivoSelecionado(e.target.files[0])}
+                    />
+
+                    <button style={theme.button} onClick={enviarAnexo}>
+                        Enviar Anexo
+                    </button>
+
+                    <h3 style={{ marginTop: "20px" }}>
+                        Arquivos anexados
+                    </h3>
+
+                    {anexos.length === 0 ? (
+                        <p>Nenhum anexo encontrado.</p>
+                    ) : (
+                        <table style={theme.table}>
+                            <thead>
+                                <tr>
+                                    <th style={theme.th}>ID</th>
+                                    <th style={theme.th}>Arquivo</th>
+                                    <th style={theme.th}>Tipo</th>
+                                    <th style={theme.th}>Ação</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {anexos.map((anexo) => (
+                                    <tr key={anexo.id}>
+                                        <td style={theme.td}>{anexo.id}</td>
+                                        <td style={theme.td}>{anexo.nomeArquivo}</td>
+                                        <td style={theme.td}>{anexo.tipoArquivo}</td>
+
+                                        <td style={theme.td}>
+                                            <button
+                                                style={theme.smallButton}
+                                                onClick={() =>
+                                                    baixarAnexo(anexo.id, anexo.nomeArquivo)
+                                                }
+                                            >
+                                                Baixar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </section>
+            )}
+        </div>
+    );
+
+    export default Ordens;
