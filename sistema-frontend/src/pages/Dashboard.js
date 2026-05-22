@@ -12,7 +12,10 @@ import {
     ResponsiveContainer
 } from "recharts";
 
-import API_URL, { getAuthHeaders } from "../services/api";
+import API_URL, {
+    getAuthHeaders,
+    apiFetch
+} from "../services/api";
 
 function Dashboard() {
     const [darkMode, setDarkMode] = useState(
@@ -42,7 +45,7 @@ function Dashboard() {
     const carregarDados = async () => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-        const ordensRes = await fetch(`${API_URL}/ordens`, {
+        const ordensRes = await apifetch(`${API_URL}/ordens`, {
             headers: getAuthHeaders()
         });
 
@@ -51,11 +54,11 @@ function Dashboard() {
         }
 
         if (usuario?.tipo === "ADMIN") {
-            const clientesRes = await fetch(`${API_URL}/clientes`, {
+            const clientesRes = await apifetch(`${API_URL}/clientes`, {
                 headers: getAuthHeaders()
             });
 
-            const funcionariosRes = await fetch(`${API_URL}/funcionarios`, {
+            const funcionariosRes = await apifetch(`${API_URL}/funcionarios`, {
                 headers: getAuthHeaders()
             });
 
