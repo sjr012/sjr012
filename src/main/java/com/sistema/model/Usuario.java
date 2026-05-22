@@ -1,6 +1,7 @@
 package com.sistema.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Usuario {
@@ -9,6 +10,8 @@ public class Usuario {
     private Long id;
     private String nome;
     private String login;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
     private String tipo;
 
