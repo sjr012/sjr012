@@ -30,15 +30,43 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario u) {
 
-        return repo.findByLogin(u.getLogin())
-                .filter(usuario -> u.getSenha().equals(usuario.getSenha()))
-                .<ResponseEntity<?>>map(usuario -> {
+        Usuario usuario = repo.findByLogin(u.getLogin()).orElse(null);
 
-                    String token = jwtService.gerarToken(usuario);
+        if (usuario == null) {
+            return ResponseEntity.status(401).body("Login inválido!");
+        }
 
-                    return ResponseEntity.ok(
-                            new LoginResponse(token, usuario));
-                })
-                .orElse(ResponseEntity.status(401).body("Login inválido!"));
+        boolean senhaCorreta = false;
+
+        // BCrypt
+        if (usuario.getSenha().startsWith("$2")) {
+
+            senhaCorreta = passwordEncoder.matches(
+                    u.getSenha(),
+                    usuario.getSenha());
+
+        } else {
+
+            // Senha antiga para texto puro
+            senhaCorreta = u.getSenha().equals(usuario.getSenha());
+
+            // Migra automaticamente para BCrypt
+            if (senhaCorreta) {
+
+                usuario.setSenha(
+                        passwordEncoder.encode(u.getSenha()));
+
+                repo.save(usuario);
+            }
+        }
+
+        if (!senhaCorreta) {
+            return ResponseEntity.status(401).body("Login inválido!");
+        }
+
+        String token = jwtService.gerarToken(usuario);
+
+        return ResponseEntity.ok(
+                new LoginResponse(token, usuario));
     }
 }
