@@ -3,6 +3,7 @@ import useTheme from "../hooks/useTheme";
 import { useEffect, useState } from "react";
 import API_URL, { getAuthHeaders } from "../services/api";
 import jsPDF from "jspdf";
+import QRCode from "qrcode";
 
 function Ordens() {
 
@@ -259,9 +260,14 @@ function Ordens() {
         });
     };
 
-    const gerarPdfOrdem = (ordem) => {
+    const gerarPdfOrdem = async (ordem) => {
 
         const doc = new jsPDF();
+
+        const urlOrdem =
+            `https://sistema-frontend-orjl.onrender.com/ordens/${ordem.id}`;
+
+        const qrCode = await QRCode.toDataURL(urlOrdem);
 
         doc.setFontSize(18);
 
@@ -273,11 +279,7 @@ function Ordens() {
 
         doc.setFontSize(12);
 
-        doc.text(
-            `Número da OS: ${ordem.id}`,
-            20,
-            40
-        );
+        doc.text(`Número da OS: ${ordem.id}`, 20, 40);
 
         doc.text(
             `Descrição: ${ordem.descricao}`,
@@ -318,12 +320,23 @@ function Ordens() {
             100
         );
 
-        doc.line(
-            20,
-            130,
-            180,
-            130
+        // QR CODE
+        doc.addImage(
+            qrCode,
+            "PNG",
+            140,
+            30,
+            40,
+            40
         );
+
+        doc.text(
+            "Escaneie para visualizar a OS",
+            120,
+            75
+        );
+
+        doc.line(20, 130, 180, 130);
 
         doc.text(
             "Assinatura do responsável",
@@ -338,250 +351,257 @@ function Ordens() {
         window.open(pdfUrl, "_blank");
     };
 
-    const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
-    const isAdmin = usuarioLogado?.tipo === "ADMIN";
+    const pdfBlob = doc.output("blob");
 
-    return (
-        <div>
-            <h1>Ordens de Serviço</h1>
+    const pdfUrl = URL.createObjectURL(pdfBlob);
 
-            {isAdmin && (
-                <section style={theme.panel}>
-                    <h2>
-                        {editando ? "Editar Ordem" : "Nova Ordem"}
-                    </h2>
+    window.open(pdfUrl, "_blank");
+};
 
-                    <input
-                        style={theme.input}
-                        placeholder="Descrição do problema"
-                        value={descricao}
-                        onChange={(e) => setDescricao(e.target.value)}
-                    />
+const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
+const isAdmin = usuarioLogado?.tipo === "ADMIN";
 
-                    <select
-                        style={theme.input}
-                        value={clienteId}
-                        onChange={(e) => setClienteId(e.target.value)}
-                    >
-                        <option value="">Selecione o cliente</option>
+return (
+    <div>
+        <h1>Ordens de Serviço</h1>
 
-                        {clientes.map((cliente) => (
-                            <option key={cliente.id} value={cliente.id}>
-                                {cliente.nome}
-                            </option>
-                        ))}
-                    </select>
-
-                    <select
-                        style={theme.input}
-                        value={funcionarioId}
-                        onChange={(e) => setFuncionarioId(e.target.value)}
-                    >
-                        <option value="">Selecione o funcionário</option>
-
-                        {funcionarios.map((funcionario) => (
-                            <option key={funcionario.id} value={funcionario.id}>
-                                {funcionario.nome}
-                            </option>
-                        ))}
-                    </select>
-
-                    <button style={theme.button} onClick={salvarOrdem}>
-                        {editando ? "Salvar Alterações" : "Abrir Ordem"}
-                    </button>
-
-                    {editando && (
-                        <button
-                            style={{
-                                ...theme.button,
-                                background: "#6c757d",
-                                marginTop: "10px"
-                            }}
-                            onClick={cancelarEdicao}
-                        >
-                            Cancelar Edição
-                        </button>
-                    )}
-                </section>
-            )}
-
+        {isAdmin && (
             <section style={theme.panel}>
-                <h2>Ordens Cadastradas</h2>
+                <h2>
+                    {editando ? "Editar Ordem" : "Nova Ordem"}
+                </h2>
 
-                {ordens.length === 0 ? (
-                    <p>Nenhuma ordem cadastrada.</p>
+                <input
+                    style={theme.input}
+                    placeholder="Descrição do problema"
+                    value={descricao}
+                    onChange={(e) => setDescricao(e.target.value)}
+                />
+
+                <select
+                    style={theme.input}
+                    value={clienteId}
+                    onChange={(e) => setClienteId(e.target.value)}
+                >
+                    <option value="">Selecione o cliente</option>
+
+                    {clientes.map((cliente) => (
+                        <option key={cliente.id} value={cliente.id}>
+                            {cliente.nome}
+                        </option>
+                    ))}
+                </select>
+
+                <select
+                    style={theme.input}
+                    value={funcionarioId}
+                    onChange={(e) => setFuncionarioId(e.target.value)}
+                >
+                    <option value="">Selecione o funcionário</option>
+
+                    {funcionarios.map((funcionario) => (
+                        <option key={funcionario.id} value={funcionario.id}>
+                            {funcionario.nome}
+                        </option>
+                    ))}
+                </select>
+
+                <button style={theme.button} onClick={salvarOrdem}>
+                    {editando ? "Salvar Alterações" : "Abrir Ordem"}
+                </button>
+
+                {editando && (
+                    <button
+                        style={{
+                            ...theme.button,
+                            background: "#6c757d",
+                            marginTop: "10px"
+                        }}
+                        onClick={cancelarEdicao}
+                    >
+                        Cancelar Edição
+                    </button>
+                )}
+            </section>
+        )}
+
+        <section style={theme.panel}>
+            <h2>Ordens Cadastradas</h2>
+
+            {ordens.length === 0 ? (
+                <p>Nenhuma ordem cadastrada.</p>
+            ) : (
+                <table style={theme.table}>
+                    <thead>
+                        <tr>
+                            <th style={theme.th}>ID</th>
+
+                            <th style={theme.th}>Descrição</th>
+
+                            <th style={theme.th}>Status</th>
+
+                            <th style={theme.th}>Cliente</th>
+
+                            <th style={theme.th}>Funcionário</th>
+
+                            <th style={theme.th}>Abertura</th>
+
+                            <th style={theme.th}>Fechamento</th>
+
+                            <th style={theme.th}>Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {ordens.map((ordem) => (
+                            <tr key={ordem.id}>
+
+                                <td style={theme.td}>
+                                    {ordem.id}
+                                </td>
+
+                                <td style={theme.td}>
+                                    {ordem.descricao}
+                                </td>
+
+                                <td style={theme.td}>
+                                    <span
+                                        style={
+                                            ordem.status === "FECHADA"
+                                                ? theme.statusFechada
+                                                : theme.statusAberta
+                                        }
+                                    >
+                                        {ordem.status}
+                                    </span>
+                                </td>
+
+                                <td style={theme.td}>
+                                    {ordem.cliente?.nome}
+                                </td>
+
+                                <td style={theme.td}>
+                                    {ordem.funcionario?.nome}
+                                </td>
+
+                                <td style={theme.td}>
+                                    {formatarDataHora(ordem.dataAbertura)}
+                                </td>
+
+                                <td style={theme.td}>
+                                    {ordem.dataFechamento
+                                        ? formatarDataHora(ordem.dataFechamento)
+                                        : "Em aberto"}
+                                </td>
+
+                                <td style={theme.td}>
+                                    <div style={styles.actionButtons}>
+                                        <button
+                                            style={theme.smallButton}
+                                            onClick={() => gerarPdfOrdem(ordem)}
+                                        >
+                                            PDF
+                                        </button>
+
+                                        <button
+                                            style={theme.smallButton}
+                                            onClick={() => carregarAnexos(ordem.id)}
+                                        >
+                                            Anexos
+                                        </button>
+
+                                        <button
+                                            style={theme.smallButton}
+                                            onClick={() => editarOrdem(ordem)}
+                                        >
+                                            Editar
+                                        </button>
+
+                                        <button
+                                            style={{
+                                                ...theme.smallButton,
+                                                background: "#d9534f"
+                                            }}
+                                            onClick={() => excluirOrdem(ordem.id)}
+                                        >
+                                            Excluir
+                                        </button>
+
+                                        {ordem.status !== "FECHADA" && (
+                                            <button
+                                                style={theme.smallButton}
+                                                onClick={() => fecharOrdem(ordem.id)}
+                                            >
+                                                Fechar
+                                            </button>
+                                        )}
+                                    </div>
+                                </td>
+
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </section>
+
+        {ordemSelecionada && (
+            <section style={theme.panel}>
+                <h2>Anexos da Ordem #{ordemSelecionada}</h2>
+
+                <input
+                    style={theme.input}
+                    type="file"
+                    onChange={(e) => setArquivoSelecionado(e.target.files[0])}
+                />
+
+                <button style={theme.button} onClick={enviarAnexo}>
+                    Enviar Anexo
+                </button>
+
+                <h3 style={{ marginTop: "20px" }}>
+                    Arquivos anexados
+                </h3>
+
+                {anexos.length === 0 ? (
+                    <p>Nenhum anexo encontrado.</p>
                 ) : (
                     <table style={theme.table}>
                         <thead>
                             <tr>
                                 <th style={theme.th}>ID</th>
-
-                                <th style={theme.th}>Descrição</th>
-
-                                <th style={theme.th}>Status</th>
-
-                                <th style={theme.th}>Cliente</th>
-
-                                <th style={theme.th}>Funcionário</th>
-
-                                <th style={theme.th}>Abertura</th>
-
-                                <th style={theme.th}>Fechamento</th>
-
+                                <th style={theme.th}>Arquivo</th>
+                                <th style={theme.th}>Tipo</th>
                                 <th style={theme.th}>Ação</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {ordens.map((ordem) => (
-                                <tr key={ordem.id}>
+                            {anexos.map((anexo) => (
+                                <tr key={anexo.id}>
+                                    <td style={theme.td}>{anexo.id}</td>
+                                    <td style={theme.td}>{anexo.nomeArquivo}</td>
+                                    <td style={theme.td}>{anexo.tipoArquivo}</td>
 
                                     <td style={theme.td}>
-                                        {ordem.id}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {ordem.descricao}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        <span
-                                            style={
-                                                ordem.status === "FECHADA"
-                                                    ? theme.statusFechada
-                                                    : theme.statusAberta
+                                        <button
+                                            style={theme.smallButton}
+                                            onClick={() =>
+                                                baixarAnexo(anexo.id, anexo.nomeArquivo)
                                             }
                                         >
-                                            {ordem.status}
-                                        </span>
+                                            Baixar
+                                        </button>
                                     </td>
-
-                                    <td style={theme.td}>
-                                        {ordem.cliente?.nome}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {ordem.funcionario?.nome}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {formatarDataHora(ordem.dataAbertura)}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {ordem.dataFechamento
-                                            ? formatarDataHora(ordem.dataFechamento)
-                                            : "Em aberto"}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        <div style={styles.actionButtons}>
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => gerarPdfOrdem(ordem)}
-                                            >
-                                                PDF
-                                            </button>
-
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => carregarAnexos(ordem.id)}
-                                            >
-                                                Anexos
-                                            </button>
-
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => editarOrdem(ordem)}
-                                            >
-                                                Editar
-                                            </button>
-
-                                            <button
-                                                style={{
-                                                    ...theme.smallButton,
-                                                    background: "#d9534f"
-                                                }}
-                                                onClick={() => excluirOrdem(ordem.id)}
-                                            >
-                                                Excluir
-                                            </button>
-
-                                            {ordem.status !== "FECHADA" && (
-                                                <button
-                                                    style={theme.smallButton}
-                                                    onClick={() => fecharOrdem(ordem.id)}
-                                                >
-                                                    Fechar
-                                                </button>
-                                            )}
-                                        </div>
-                                    </td>
-
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
             </section>
-
-            {ordemSelecionada && (
-                <section style={theme.panel}>
-                    <h2>Anexos da Ordem #{ordemSelecionada}</h2>
-
-                    <input
-                        style={theme.input}
-                        type="file"
-                        onChange={(e) => setArquivoSelecionado(e.target.files[0])}
-                    />
-
-                    <button style={theme.button} onClick={enviarAnexo}>
-                        Enviar Anexo
-                    </button>
-
-                    <h3 style={{ marginTop: "20px" }}>
-                        Arquivos anexados
-                    </h3>
-
-                    {anexos.length === 0 ? (
-                        <p>Nenhum anexo encontrado.</p>
-                    ) : (
-                        <table style={theme.table}>
-                            <thead>
-                                <tr>
-                                    <th style={theme.th}>ID</th>
-                                    <th style={theme.th}>Arquivo</th>
-                                    <th style={theme.th}>Tipo</th>
-                                    <th style={theme.th}>Ação</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {anexos.map((anexo) => (
-                                    <tr key={anexo.id}>
-                                        <td style={theme.td}>{anexo.id}</td>
-                                        <td style={theme.td}>{anexo.nomeArquivo}</td>
-                                        <td style={theme.td}>{anexo.tipoArquivo}</td>
-
-                                        <td style={theme.td}>
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() =>
-                                                    baixarAnexo(anexo.id, anexo.nomeArquivo)
-                                                }
-                                            >
-                                                Baixar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
-                </section>
-            )}
-        </div>
-    );
+        )}
+    </div>
+);
 }
 
 export default Ordens;

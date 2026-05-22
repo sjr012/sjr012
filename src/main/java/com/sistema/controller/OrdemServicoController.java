@@ -26,8 +26,7 @@ public class OrdemServicoController {
     public OrdemServicoController(
             OrdemServicoRepository repo,
             ClienteRepository clienteRepository,
-            FuncionarioRepository funcionarioRepository
-    ) {
+            FuncionarioRepository funcionarioRepository) {
         this.repo = repo;
         this.clienteRepository = clienteRepository;
         this.funcionarioRepository = funcionarioRepository;
@@ -36,6 +35,19 @@ public class OrdemServicoController {
     @GetMapping
     public List<OrdemServico> listar() {
         return repo.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPorId(
+            @PathVariable("id") Long id) {
+
+        OrdemServico ordem = repo.findById(id).orElse(null);
+
+        if (ordem == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ordem);
     }
 
     @PostMapping
@@ -48,8 +60,7 @@ public class OrdemServicoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(
             @PathVariable("id") @NonNull Long id,
-            @RequestBody OrdemServico dados
-    ) {
+            @RequestBody OrdemServico dados) {
         OrdemServico ordem = repo.findById(id).orElse(null);
 
         if (ordem == null) {

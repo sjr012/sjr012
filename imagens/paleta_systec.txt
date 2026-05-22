@@ -1,0 +1,10 @@
+
+PALETA OFICIAL SYSTEC
+
+#081B8F - Azul Escuro Principal
+#1636A3 - Azul Corporativo
+#1F5DCC - Azul Médio Tech
+#27C2FF - Azul Neon Suave
+#5EDBFF - Azul Claro Accent
+#FFFFFF - Branco
+#E9EEF7 - Cinza Técnico

@@ -12,6 +12,7 @@ import Usuarios from "./pages/Usuarios";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Ordens from "./pages/Ordens";
+import OrdemDetalhe from "./pages/OrdemDetalhe";
 import Clientes from "./pages/Clientes";
 import Funcionarios from "./pages/Funcionarios";
 import Layout from "./components/Layout";
@@ -87,6 +88,15 @@ function App() {
           element={
             <ProtectedLayout>
               <Ordens />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/ordens/:id"
+          element={
+            <ProtectedLayout>
+              <OrdemDetalhe />
             </ProtectedLayout>
           }
         />
