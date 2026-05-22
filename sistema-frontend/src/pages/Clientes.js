@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import API_URL, { getAuthHeaders } from "../services/api";
+import API_URL, {
+  getAuthHeaders,
+  apiFetch
+} from "../services/api";
+
 import useTheme from "../hooks/useTheme";
 
 function Clientes() {
+
   const theme = useTheme();
 
   const [clientes, setClientes] = useState([]);
@@ -22,7 +27,8 @@ function Clientes() {
   }, []);
 
   const carregarClientes = async () => {
-    const response = await fetch(`${API_URL}/clientes`, {
+
+    const response = await apiFetch(`${API_URL}/clientes`, {
       headers: getAuthHeaders()
     });
 
@@ -31,6 +37,7 @@ function Clientes() {
   };
 
   const formatarTelefone = (valor) => {
+
     if (!valor) return "";
 
     valor = valor.replace(/\D/g, "");
@@ -41,7 +48,9 @@ function Clientes() {
   };
 
   const salvarCliente = async () => {
+
     if (!nome || !telefone || !email) {
+
       toast.warning("Preencha todos os campos.");
       return;
     }
@@ -52,7 +61,7 @@ function Clientes() {
 
     const metodo = editando ? "PUT" : "POST";
 
-    const response = await fetch(url, {
+    const response = await apiFetch(url, {
       method: metodo,
       headers: getAuthHeaders(),
       body: JSON.stringify({
@@ -63,6 +72,7 @@ function Clientes() {
     });
 
     if (!response.ok) {
+
       toast.error("Erro ao salvar cliente.");
       return;
     }
@@ -76,6 +86,7 @@ function Clientes() {
     setNome("");
     setTelefone("");
     setEmail("");
+
     setEditando(false);
     setClienteEditando(null);
 
@@ -83,6 +94,7 @@ function Clientes() {
   };
 
   const editarCliente = (cliente) => {
+
     setEditando(true);
     setClienteEditando(cliente.id);
 
@@ -92,28 +104,33 @@ function Clientes() {
   };
 
   const excluirCliente = async (id) => {
+
     if (!window.confirm("Deseja realmente excluir este cliente?")) {
       return;
     }
 
-    const response = await fetch(`${API_URL}/clientes/${id}`, {
+    const response = await apiFetch(`${API_URL}/clientes/${id}`, {
       method: "DELETE",
       headers: getAuthHeaders()
     });
 
     if (!response.ok) {
+
       toast.error("Erro ao excluir cliente.");
       return;
     }
 
     toast.success("Cliente excluído com sucesso!");
+
     carregarClientes();
   };
 
   const cancelarEdicao = () => {
+
     setNome("");
     setTelefone("");
     setEmail("");
+
     setEditando(false);
     setClienteEditando(null);
   };
@@ -126,10 +143,16 @@ function Clientes() {
 
   return (
     <div>
-      <h1 style={theme.pageTitle}>Clientes</h1>
+
+      <h1 style={theme.pageTitle}>
+        Clientes
+      </h1>
 
       <section style={theme.panel}>
-        <h2>{editando ? "Editar Cliente" : "Novo Cliente"}</h2>
+
+        <h2>
+          {editando ? "Editar Cliente" : "Novo Cliente"}
+        </h2>
 
         <input
           style={theme.input}
@@ -152,11 +175,17 @@ function Clientes() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button style={theme.button} onClick={salvarCliente}>
-          {editando ? "Salvar Alterações" : "Cadastrar Cliente"}
+        <button
+          style={theme.button}
+          onClick={salvarCliente}
+        >
+          {editando
+            ? "Salvar Alterações"
+            : "Cadastrar Cliente"}
         </button>
 
         {editando && (
+
           <button
             style={{
               ...theme.button,
@@ -168,10 +197,14 @@ function Clientes() {
             Cancelar Edição
           </button>
         )}
+
       </section>
 
       <section style={theme.panel}>
-        <h2>Clientes Cadastrados</h2>
+
+        <h2>
+          Clientes Cadastrados
+        </h2>
 
         <input
           style={theme.input}
@@ -181,10 +214,17 @@ function Clientes() {
         />
 
         {clientesFiltrados.length === 0 ? (
-          <p>Nenhum cliente encontrado.</p>
+
+          <p>
+            Nenhum cliente encontrado.
+          </p>
+
         ) : (
+
           <table style={theme.table}>
+
             <thead>
+
               <tr>
                 <th style={theme.th}>ID</th>
                 <th style={theme.th}>Nome</th>
@@ -192,18 +232,33 @@ function Clientes() {
                 <th style={theme.th}>E-mail</th>
                 <th style={theme.th}>Ação</th>
               </tr>
+
             </thead>
 
             <tbody>
+
               {clientesFiltrados.map((cliente) => (
+
                 <tr key={cliente.id}>
-                  <td style={theme.td}>{cliente.id}</td>
-                  <td style={theme.td}>{cliente.nome}</td>
+
+                  <td style={theme.td}>
+                    {cliente.id}
+                  </td>
+
+                  <td style={theme.td}>
+                    {cliente.nome}
+                  </td>
+
                   <td style={theme.td}>
                     {formatarTelefone(cliente.telefone)}
                   </td>
-                  <td style={theme.td}>{cliente.email}</td>
+
                   <td style={theme.td}>
+                    {cliente.email}
+                  </td>
+
+                  <td style={theme.td}>
+
                     <button
                       style={theme.smallButton}
                       onClick={() => editarCliente(cliente)}
@@ -221,13 +276,19 @@ function Clientes() {
                     >
                       Excluir
                     </button>
+
                   </td>
+
                 </tr>
               ))}
+
             </tbody>
+
           </table>
         )}
+
       </section>
+
     </div>
   );
 }
