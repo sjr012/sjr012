@@ -1,6 +1,13 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
+
 import Usuarios from "./pages/Usuarios";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -9,24 +16,55 @@ import Clientes from "./pages/Clientes";
 import Funcionarios from "./pages/Funcionarios";
 import Layout from "./components/Layout";
 
+function getUsuarioLogado() {
+  try {
+    return JSON.parse(localStorage.getItem("usuario"));
+  } catch {
+    localStorage.removeItem("usuario");
+    return null;
+  }
+}
+
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
 }
 
 function AdminRoute({ children }) {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const usuario = getUsuarioLogado();
 
   if (!usuario || usuario.tipo !== "ADMIN") {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
+}
+
+function ProtectedLayout({ children }) {
+  return (
+    <PrivateRoute>
+      <Layout>
+        {children}
+      </Layout>
+    </PrivateRoute>
+  );
+}
+
+function AdminLayout({ children }) {
+  return (
+    <PrivateRoute>
+      <AdminRoute>
+        <Layout>
+          {children}
+        </Layout>
+      </AdminRoute>
+    </PrivateRoute>
+  );
 }
 
 function App() {
@@ -38,61 +76,54 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute>
-              <Layout>
-                <Dashboard />
-              </Layout>
-            </PrivateRoute>
+            <ProtectedLayout>
+              <Dashboard />
+            </ProtectedLayout>
           }
         />
 
         <Route
           path="/ordens"
           element={
-            <PrivateRoute>
-              <Layout>
-                <Ordens />
-              </Layout>
-            </PrivateRoute>
+            <ProtectedLayout>
+              <Ordens />
+            </ProtectedLayout>
           }
         />
 
         <Route
           path="/clientes"
           element={
-            <PrivateRoute>
-              <AdminRoute>
-                <Layout>
-                  <Clientes />
-                </Layout>
-              </AdminRoute>
-            </PrivateRoute>
+            <AdminLayout>
+              <Clientes />
+            </AdminLayout>
           }
         />
 
         <Route
-        path="/usuarios"
-        element={
-          <PrivateRoute>
-            <AdminRoute>
-              <Layout>
-                <Usuarios />
-              </Layout>
-            </AdminRoute>
-          </PrivateRoute>
-        }
-      />
+          path="/usuarios"
+          element={
+            <AdminLayout>
+              <Usuarios />
+            </AdminLayout>
+          }
+        />
 
         <Route
           path="/funcionarios"
           element={
-            <PrivateRoute>
-              <AdminRoute>
-                <Layout>
-                  <Funcionarios />
-                </Layout>
-              </AdminRoute>
-            </PrivateRoute>
+            <AdminLayout>
+              <Funcionarios />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            localStorage.getItem("token")
+              ? <Navigate to="/dashboard" replace />
+              : <Navigate to="/" replace />
           }
         />
       </Routes>
@@ -102,7 +133,6 @@ function App() {
         autoClose={3000}
         theme={localStorage.getItem("tema") === "dark" ? "dark" : "light"}
       />
-
     </BrowserRouter>
   );
 }
