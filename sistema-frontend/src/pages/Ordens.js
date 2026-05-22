@@ -620,22 +620,26 @@ function Ordens() {
                                                 Anexos
                                             </button>
 
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => editarOrdem(ordem)}
-                                            >
-                                                Editar
-                                            </button>
+                                            {isAdmin && (
+                                                <>
+                                                    <button
+                                                        style={theme.smallButton}
+                                                        onClick={() => editarOrdem(ordem)}
+                                                    >
+                                                        Editar
+                                                    </button>
 
-                                            <button
-                                                style={{
-                                                    ...theme.smallButton,
-                                                    background: "#d9534f"
-                                                }}
-                                                onClick={() => excluirOrdem(ordem.id)}
-                                            >
-                                                Excluir
-                                            </button>
+                                                    <button
+                                                        style={{
+                                                            ...theme.smallButton,
+                                                            background: "#d9534f"
+                                                        }}
+                                                        onClick={() => excluirOrdem(ordem.id)}
+                                                    >
+                                                        Excluir
+                                                    </button>
+                                                </>
+                                            )}
 
                                             {ordem.status !== "FECHADA" && (
                                                 <button
