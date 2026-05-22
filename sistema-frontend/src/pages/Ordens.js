@@ -455,16 +455,11 @@ function Ordens() {
         );
 
         // ABRIR PDF
-        const pdfBlob =
-            doc.output("blob");
+        const pdfBlob = doc.output("blob");
 
-        const pdfUrl =
-            URL.createObjectURL(pdfBlob);
+        const pdfUrl = URL.createObjectURL(pdfBlob);
 
-        window.open(
-            pdfUrl,
-            "_blank"
-        );
+        window.open(pdfUrl, "_blank");
     };
 
 };
@@ -713,6 +708,5 @@ return (
         )}
     </div>
 );
-}
 
 export default Ordens;
