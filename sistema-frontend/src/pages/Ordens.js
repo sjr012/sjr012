@@ -471,7 +471,7 @@ function Ordens() {
     const isAdmin = usuarioLogado?.tipo === "ADMIN";
 
     return (
-        
+
         <div>
             <h1>Ordens de Serviço</h1>
 
@@ -712,5 +712,6 @@ function Ordens() {
             )}
         </div>
     );
+}
 
-    export default Ordens;
+export default Ordens;
