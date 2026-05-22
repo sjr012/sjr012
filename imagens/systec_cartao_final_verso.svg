@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="550" viewBox="0 0 1000 550" xmlns="http://www.w3.org/2000/svg">
+
+<rect width="1000" height="550" rx="30" fill="white"/>
+
+<rect x="0" y="500" width="600" height="50" fill="#081B8F"/>
+<rect x="0" y="500" width="120" height="50" fill="#27C2FF"/>
+
+<!-- mini logo -->
+<path d="M240,140
+C180,140 150,180 150,220
+C150,270 200,280 240,280
+L280,280
+C320,280 350,310 350,350
+C350,390 320,420 280,420
+C240,420 210,390 210,350"
+stroke="url(#logo2)"
+stroke-width="28"
+fill="none"
+stroke-linecap="round"/>
+
+<defs>
+<linearGradient id="logo2" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#27C2FF"/>
+<stop offset="100%" stop-color="#0A36D6"/>
+</linearGradient>
+</defs>
+
+<line x1="420" y1="120" x2="420" y2="430" stroke="#1636A3" stroke-width="2"/>
+
+<text x="470" y="170"
+font-family="Montserrat, Arial"
+font-size="70"
+fill="#081B8F">
+SYSTEC
+</text>
+
+<text x="470" y="210"
+font-family="Montserrat, Arial"
+font-size="18"
+fill="#1F5DCC"
+letter-spacing="4">
+GESTÃO DE ORDENS DE SERVIÇO
+</text>
+
+<text x="520" y="300"
+font-family="Montserrat, Arial"
+font-size="28"
+fill="#081B8F">
+📞 (81) 99631-1296
+</text>
+
+<text x="520" y="350"
+font-family="Montserrat, Arial"
+font-size="28"
+fill="#081B8F">
+✉ contato@systec.com.br
+</text>
+
+<text x="520" y="400"
+font-family="Montserrat, Arial"
+font-size="28"
+fill="#081B8F">
+🌐 www.systec.com.br
+</text>
+
+<rect x="760" y="180" width="140" height="140"
+stroke="#27C2FF"
+stroke-width="4"
+fill="none"/>
+
+<text x="795" y="260"
+font-family="Montserrat, Arial"
+font-size="26"
+fill="#27C2FF">
+QR
+</text>
+
+</svg>

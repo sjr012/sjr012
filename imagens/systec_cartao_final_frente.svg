@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="550" viewBox="0 0 1000 550" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#02114d"/>
+<stop offset="100%" stop-color="#081B8F"/>
+</linearGradient>
+
+<linearGradient id="logo" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#27C2FF"/>
+<stop offset="100%" stop-color="#0A36D6"/>
+</linearGradient>
+</defs>
+
+<rect width="1000" height="550" rx="30" fill="url(#bg)"/>
+
+<!-- circuit lines -->
+<g stroke="#27C2FF" stroke-width="3" opacity="0.85">
+<path d="M40 100 H180 L220 140 H360"/>
+<path d="M60 150 H210 L260 200 H390"/>
+<path d="M80 210 H240 L300 250 H420"/>
+<path d="M30 280 H190 L240 330 H360"/>
+</g>
+
+<!-- logo -->
+<path d="M350,120
+C250,120 220,180 220,240
+C220,320 300,330 360,330
+L420,330
+C470,330 510,360 510,410
+C510,460 470,500 410,500
+C360,500 320,460 320,420"
+stroke="url(#logo)"
+stroke-width="40"
+fill="none"
+stroke-linecap="round"/>
+
+<line x1="560" y1="120" x2="560" y2="420" stroke="#27C2FF" stroke-width="2"/>
+
+<text x="610" y="240"
+font-family="Montserrat, Arial"
+font-size="90"
+fill="white"
+letter-spacing="5">
+SYSTEC
+</text>
+
+<text x="610" y="310"
+font-family="Montserrat, Arial"
+font-size="28"
+fill="#5EDBFF"
+letter-spacing="5">
+GESTÃO DE ORDENS DE SERVIÇO
+</text>
+
+<line x1="610" y1="340" x2="900" y2="340" stroke="#27C2FF" stroke-width="2"/>
+
+<text x="650" y="410"
+font-family="Montserrat, Arial"
+font-size="36"
+fill="white">
+Fone: (81) 99631-1296
+</text>
+
+</svg>

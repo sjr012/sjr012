@@ -3,6 +3,7 @@ import useTheme from "../hooks/useTheme";
 import { useEffect, useState } from "react";
 import API_URL, { getAuthHeaders } from "../services/api";
 import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import QRCode from "qrcode";
 
 function Ordens() {
@@ -269,93 +270,203 @@ function Ordens() {
 
         const qrCode = await QRCode.toDataURL(urlOrdem);
 
-        doc.setFontSize(18);
+        // CABEÇALHO
+        doc.setFillColor(15, 42, 95);
 
-        doc.text(
-            "SYSTEC - Ordem de Serviço",
-            20,
-            20
+        doc.rect(
+            0,
+            0,
+            210,
+            28,
+            "F"
         );
 
-        doc.setFontSize(12);
+        doc.setTextColor(255, 255, 255);
 
-        doc.text(`Número da OS: ${ordem.id}`, 20, 40);
+        doc.setFontSize(20);
 
         doc.text(
-            `Descrição: ${ordem.descricao}`,
+            "SYSTEC",
             20,
-            50
+            14
         );
 
-        doc.text(
-            `Status: ${ordem.status}`,
-            20,
-            60
-        );
+        doc.setFontSize(11);
 
         doc.text(
-            `Cliente: ${ordem.cliente?.nome || ""}`,
+            "Sistema de Ordem de Serviço",
             20,
-            70
+            22
         );
 
-        doc.text(
-            `Funcionário: ${ordem.funcionario?.nome || ""}`,
-            20,
-            80
-        );
+        // TÍTULO
+        doc.setTextColor(0, 0, 0);
+
+        doc.setFontSize(16);
 
         doc.text(
-            `Data de Abertura: ${formatarDataHora(ordem.dataAbertura)}`,
+            `Ordem de Serviço #${ordem.id}`,
             20,
-            90
+            42
         );
 
+        doc.setFontSize(10);
+
         doc.text(
-            `Data de Fechamento: ${ordem.dataFechamento
-                ? formatarDataHora(ordem.dataFechamento)
-                : "Em aberto"
-            }`,
+            `Gerado em: ${formatarDataHora(new Date())}`,
             20,
-            100
+            49
         );
 
         // QR CODE
         doc.addImage(
             qrCode,
             "PNG",
-            140,
-            30,
-            40,
-            40
+            160,
+            35,
+            32,
+            32
         );
+
+        doc.setFontSize(8);
 
         doc.text(
-            "Escaneie para visualizar a OS",
-            120,
-            75
+            "Escaneie para abrir a OS",
+            152,
+            71
         );
 
-        doc.line(20, 130, 180, 130);
+        // TABELA
+        autoTable(doc, {
+            startY: 78,
+
+            head: [
+                ["Campo", "Informação"]
+            ],
+
+            body: [
+                ["Número da OS", ordem.id],
+
+                ["Status", ordem.status],
+
+                [
+                    "Cliente",
+                    ordem.cliente?.nome || "-"
+                ],
+
+                [
+                    "Funcionário",
+                    ordem.funcionario?.nome || "-"
+                ],
+
+                [
+                    "Data de Abertura",
+                    formatarDataHora(ordem.dataAbertura)
+                ],
+
+                [
+                    "Data de Fechamento",
+                    ordem.dataFechamento
+                        ? formatarDataHora(ordem.dataFechamento)
+                        : "Em aberto"
+                ]
+            ],
+
+            styles: {
+                fontSize: 10,
+                cellPadding: 4
+            },
+
+            headStyles: {
+                fillColor: [15, 42, 95],
+                textColor: [255, 255, 255]
+            },
+
+            alternateRowStyles: {
+                fillColor: [245, 247, 250]
+            }
+        });
+
+        // DESCRIÇÃO
+        const finalY =
+            doc.lastAutoTable.finalY + 12;
+
+        doc.setFontSize(12);
+
+        doc.text(
+            "Descrição do Serviço",
+            20,
+            finalY
+        );
+
+        doc.setFontSize(10);
+
+        const descricaoFormatada =
+            doc.splitTextToSize(
+                ordem.descricao || "-",
+                170
+            );
+
+        doc.text(
+            descricaoFormatada,
+            20,
+            finalY + 8
+        );
+
+        // ASSINATURAS
+        const assinaturaY =
+            finalY + 45;
+
+        doc.line(
+            20,
+            assinaturaY,
+            90,
+            assinaturaY
+        );
 
         doc.text(
             "Assinatura do responsável",
-            20,
-            140
+            25,
+            assinaturaY + 7
         );
 
-        const pdfBlob = doc.output("blob");
+        doc.line(
+            120,
+            assinaturaY,
+            190,
+            assinaturaY
+        );
 
-        const pdfUrl = URL.createObjectURL(pdfBlob);
+        doc.text(
+            "Assinatura do cliente",
+            135,
+            assinaturaY + 7
+        );
 
-        window.open(pdfUrl, "_blank");
+        // RODAPÉ
+        doc.setFontSize(8);
+
+        doc.setTextColor(100);
+
+        doc.text(
+            "Documento gerado automaticamente pelo sistema SYSTEC.",
+            20,
+            285
+        );
+
+        // ABRIR PDF
+        const pdfBlob =
+            doc.output("blob");
+
+        const pdfUrl =
+            URL.createObjectURL(pdfBlob);
+
+        window.open(
+            pdfUrl,
+            "_blank"
+        );
     };
 
-    const pdfBlob = doc.output("blob");
-
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-
-    window.open(pdfUrl, "_blank");
 };
 
 const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
