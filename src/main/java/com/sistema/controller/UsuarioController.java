@@ -35,7 +35,9 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable @NonNull Long id, @RequestBody Usuario dados) {
+    public ResponseEntity<?> atualizar(
+            @PathVariable @NonNull Long id,
+            @RequestBody Usuario dados) {
 
         Usuario usuario = repo.findById(id).orElse(null);
 
@@ -47,8 +49,12 @@ public class UsuarioController {
         usuario.setLogin(dados.getLogin());
         usuario.setTipo(dados.getTipo());
 
-        if (dados.getSenha() != null && !dados.getSenha().isBlank()) {
-            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        // Atualiza senha somente se vier preenchida
+        if (dados.getSenha() != null &&
+                !dados.getSenha().isBlank()) {
+
+            usuario.setSenha(
+                    passwordEncoder.encode(dados.getSenha()));
         }
 
         return ResponseEntity.ok(repo.save(usuario));
