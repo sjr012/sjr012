@@ -13,11 +13,13 @@ import {
 } from "recharts";
 
 import API_URL, {
-    getAuthHeaders,
     apiFetch
 } from "../services/api";
 
 function Dashboard() {
+
+    const [loading, setLoading] = useState(true);
+
     const [darkMode, setDarkMode] = useState(
         localStorage.getItem("tema") === "dark"
     );
@@ -43,32 +45,40 @@ function Dashboard() {
     }, []);
 
     const carregarDados = async () => {
-        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        try {
+            setLoading(true);
 
-        const ordensRes = await apiFetch(`${API_URL}/ordens`, {
-            headers: getAuthHeaders()
-        });
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-        if (ordensRes.ok) {
-            setOrdens(await ordensRes.json());
-        }
+            if (usuario?.tipo === "ADMIN") {
+                const [ordensRes, clientesRes, funcionariosRes] = await Promise.all([
+                    apiFetch(`${API_URL}/ordens`),
+                    apiFetch(`${API_URL}/clientes`),
+                    apiFetch(`${API_URL}/funcionarios`)
+                ]);
 
-        if (usuario?.tipo === "ADMIN") {
-            const clientesRes = await apiFetch(`${API_URL}/clientes`, {
-                headers: getAuthHeaders()
-            });
+                if (ordensRes.ok) {
+                    setOrdens(await ordensRes.json());
+                }
 
-            const funcionariosRes = await apiFetch(`${API_URL}/funcionarios`, {
-                headers: getAuthHeaders()
-            });
+                if (clientesRes.ok) {
+                    setClientes(await clientesRes.json());
+                }
 
-            if (clientesRes.ok) {
-                setClientes(await clientesRes.json());
+                if (funcionariosRes.ok) {
+                    setFuncionarios(await funcionariosRes.json());
+                }
+
+            } else {
+                const ordensRes = await apiFetch(`${API_URL}/ordens`);
+
+                if (ordensRes.ok) {
+                    setOrdens(await ordensRes.json());
+                }
             }
 
-            if (funcionariosRes.ok) {
-                setFuncionarios(await funcionariosRes.json());
-            }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -103,6 +113,10 @@ function Dashboard() {
             total
         };
     });
+
+    if (loading) {
+        return <h2>Carregando dados...</h2>;
+    }
 
     return (
         <div>
