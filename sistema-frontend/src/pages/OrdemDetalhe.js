@@ -15,11 +15,14 @@ function OrdemDetalhe() {
 
     const [ordem, setOrdem] = useState(null);
 
+    const [anexos, setAnexos] = useState([]);
+
     const darkMode =
         localStorage.getItem("tema") === "dark";
 
     useEffect(() => {
         carregarOrdem();
+        carregarAnexos();
     }, []);
 
     const carregarOrdem = async () => {
@@ -38,6 +41,24 @@ function OrdemDetalhe() {
         const data = await response.json();
 
         setOrdem(data);
+    };
+
+    const carregarAnexos = async () => {
+
+        const response = await apiFetch(
+            `${API_URL}/anexos/ordem/${id}`,
+            {
+                headers: getAuthHeaders()
+            }
+        );
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        setAnexos(data);
     };
 
     const formatarDataHora = (valor) => {
@@ -472,6 +493,87 @@ function OrdemDetalhe() {
 
             </section>
 
+            {/* ANEXOS */}
+            <section style={{
+                background: darkMode ? "#1f2937" : "#fff",
+                padding: "25px",
+                borderRadius: "16px",
+                marginBottom: "25px",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.08)"
+            }}>
+
+                <h2>Anexos</h2>
+
+                {anexos.length === 0 ? (
+
+                    <p>Nenhum anexo encontrado.</p>
+
+                ) : (
+
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                        gap: "20px",
+                        marginTop: "20px"
+                    }}>
+
+                        {anexos.map((anexo) => (
+
+                            <div
+                                key={anexo.id}
+                                style={{
+                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    borderRadius: "12px",
+                                    padding: "15px"
+                                }}
+                            >
+
+                                <h4>
+                                    {anexo.nomeArquivo}
+                                </h4>
+
+                                <p>
+                                    {anexo.tipoArquivo}
+                                </p>
+
+                                <div style={{
+                                    display: "flex",
+                                    gap: "10px",
+                                    flexWrap: "wrap",
+                                    marginTop: "10px"
+                                }}>
+
+                                    <a
+                                        href={`${API_URL}/anexos/download/${anexo.id}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        style={styles.linkButton}
+                                    >
+                                        Visualizar
+                                    </a>
+
+                                    <a
+                                        href={`${API_URL}/anexos/download/${anexo.id}`}
+                                        download
+                                        style={{
+                                            ...styles.linkButton,
+                                            background: "#198754"
+                                        }}
+                                    >
+                                        Baixar
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        ))}
+
+                    </div>
+                )}
+
+            </section>
+
             {/* BOTÕES */}
             <section style={{
                 display: "flex",
@@ -547,6 +649,16 @@ const styles = {
         background: "#fd7e14"
     },
 
+    linkButton: {
+        background: "#0d6efd",
+        color: "#fff",
+        textDecoration: "none",
+        padding: "10px 14px",
+        borderRadius: "8px",
+        fontWeight: "bold",
+        display: "inline-block"
+    },
+
     button: {
         background: "#198754",
 
@@ -564,6 +676,7 @@ const styles = {
 
         fontSize: "14px"
     }
+
 };
 
 export default OrdemDetalhe;
