@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useTheme from "../hooks/useTheme";
 import { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import QRCode from "qrcode";
 function Ordens() {
 
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const [clientes, setClientes] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
@@ -606,6 +608,14 @@ function Ordens() {
 
                                     <td style={theme.td}>
                                         <div style={styles.actionButtons}>
+
+                                            <button
+                                                style={theme.smallButton}
+                                                onClick={() => navigate(`/ordens/${ordem.id}`)}
+                                            >
+                                                Detalhes
+                                            </button>
+
                                             <button
                                                 style={theme.smallButton}
                                                 onClick={() => gerarPdfOrdem(ordem)}
