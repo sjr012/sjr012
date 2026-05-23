@@ -589,7 +589,9 @@ function OrdemDetalhe() {
                                 }}>
 
                                     <button
-                                        style={styles.button}
+                                        style={styles.button,
+                                            background: "#0d6efd"
+                                        }
                                         onClick={() => visualizarAnexo(anexo)}
                                     >
                                         Visualizar
