@@ -61,6 +61,52 @@ function OrdemDetalhe() {
         setAnexos(data);
     };
 
+    const visualizarAnexo = async (anexo) => {
+        const response = await apiFetch(
+            `${API_URL}/anexos/download/${anexo.id}`,
+            {
+                headers: getAuthHeaders()
+            }
+        );
+
+        if (!response.ok) {
+            alert("Erro ao visualizar anexo.");
+            return;
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        window.open(url, "_blank");
+    };
+
+    const baixarAnexo = async (anexo) => {
+        const response = await apiFetch(
+            `${API_URL}/anexos/download/${anexo.id}`,
+            {
+                headers: getAuthHeaders()
+            }
+        );
+
+        if (!response.ok) {
+            alert("Erro ao baixar anexo.");
+            return;
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = anexo.nomeArquivo;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
+    };
+
     const formatarDataHora = (valor) => {
 
         if (!valor) return "Em aberto";
@@ -542,25 +588,22 @@ function OrdemDetalhe() {
                                     marginTop: "10px"
                                 }}>
 
-                                    <a
-                                        href={`${API_URL}/anexos/download/${anexo.id}`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        style={styles.linkButton}
+                                    <button
+                                        style={styles.button}
+                                        onClick={() => visualizarAnexo(anexo)}
                                     >
                                         Visualizar
-                                    </a>
+                                    </button>
 
-                                    <a
-                                        href={`${API_URL}/anexos/download/${anexo.id}`}
-                                        download
+                                    <button
                                         style={{
-                                            ...styles.linkButton,
+                                            ...styles.button,
                                             background: "#198754"
                                         }}
+                                        onClick={() => baixarAnexo(anexo)}
                                     >
                                         Baixar
-                                    </a>
+                                    </button>
 
                                 </div>
 
