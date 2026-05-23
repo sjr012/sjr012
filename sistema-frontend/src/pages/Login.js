@@ -1,6 +1,6 @@
 import background from "../assets/background.jpeg";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API_URL from "../services/api";
 
@@ -9,6 +9,12 @@ function Login() {
     const [senha, setSenha] = useState("");
 
     const navigate = useNavigate();
+
+    const loginInputRef = useRef(null);
+
+    useEffect(() => {
+        loginInputRef.current?.focus();
+    }, []);
 
     const handleLogin = async () => {
         const response = await fetch(`${API_URL}/auth/login`, {
@@ -41,6 +47,7 @@ function Login() {
                 <p style={styles.subtitle}>Sistema de Ordem de Serviço</p>
 
                 <input
+                    ref={loginInputRef}
                     style={styles.input}
                     placeholder="Login"
                     value={login}
