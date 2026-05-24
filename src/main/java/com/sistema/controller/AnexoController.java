@@ -75,6 +75,11 @@ public class AnexoController {
                     .orElseThrow(() -> new RuntimeException("Anexo não encontrado"));
 
             Path caminho = pastaUploads.resolve(anexo.getCaminhoArquivo());
+
+            if (!Files.exists(caminho)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
             Resource resource = new UrlResource(caminho.toUri());
 
             return ResponseEntity.ok()
