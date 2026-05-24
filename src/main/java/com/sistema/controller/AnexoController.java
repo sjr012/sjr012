@@ -81,7 +81,7 @@ public class AnexoController {
                     .contentType(MediaType.parseMediaType(anexo.getTipoArquivo()))
                     .header(
                             HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment; filename=\"" + anexo.getNomeArquivo() + "\"")
+                            "inline; filename=\"" + anexo.getNomeArquivo() + "\"")
                     .body(resource);
 
         } catch (Exception e) {
