@@ -62,49 +62,34 @@ function OrdemDetalhe() {
     };
 
     const visualizarAnexo = async (anexo) => {
-        const response = await apiFetch(
-            `${API_URL}/anexos/download/${anexo.id}`,
-            {
-                headers: getAuthHeaders()
-            }
-        );
+        const response = await apiFetch(`${API_URL}/anexos/download/${anexo.id}`);
 
         if (!response.ok) {
             alert("Erro ao visualizar anexo.");
             return;
         }
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-
+        const url = await response.text();
         window.open(url, "_blank");
     };
 
     const baixarAnexo = async (anexo) => {
-        const response = await apiFetch(
-            `${API_URL}/anexos/download/${anexo.id}`,
-            {
-                headers: getAuthHeaders()
-            }
-        );
+        const response = await apiFetch(`${API_URL}/anexos/download/${anexo.id}`);
 
         if (!response.ok) {
             alert("Erro ao baixar anexo.");
             return;
         }
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
+        const url = await response.text();
 
         const link = document.createElement("a");
         link.href = url;
+        link.target = "_blank";
         link.download = anexo.nomeArquivo;
-
         document.body.appendChild(link);
         link.click();
         link.remove();
-
-        URL.revokeObjectURL(url);
     };
 
     const formatarDataHora = (valor) => {

@@ -86,16 +86,12 @@ public class AnexoController {
     public ResponseEntity<?> download(@PathVariable Long id) {
 
         try {
-
             Anexo anexo = anexoRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Anexo não encontrado"));
 
-            return ResponseEntity.status(HttpStatus.FOUND)
-                    .location(URI.create(anexo.getCaminhoArquivo()))
-                    .build();
+            return ResponseEntity.ok(anexo.getCaminhoArquivo());
 
         } catch (Exception e) {
-
             return ResponseEntity.notFound().build();
         }
     }
