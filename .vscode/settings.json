@@ -1,5 +1,20 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "cSpell.words": [
+        "ABERTA",
+        "abrir",
+        "atualizar",
+        "buscar",
+        "Cliente",
+        "excluir",
+        "FECHADA",
+        "fechar",
+        "Funcionario",
+        "listar",
+        "Ordem",
+        "ordens",
+        "Servico"
+    ]
 }
