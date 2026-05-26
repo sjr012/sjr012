@@ -83,13 +83,25 @@ function OrdemDetalhe() {
 
         const url = await response.text();
 
+        const arquivoResponse = await fetch(url);
+
+        if (!arquivoResponse.ok) {
+            alert("Erro ao baixar arquivo do Cloudinary.");
+            return;
+        }
+
+        const blob = await arquivoResponse.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
         const link = document.createElement("a");
-        link.href = url;
-        link.target = "_blank";
+        link.href = blobUrl;
         link.download = anexo.nomeArquivo;
+
         document.body.appendChild(link);
         link.click();
         link.remove();
+
+        URL.revokeObjectURL(blobUrl);
     };
 
     const obterIconeAnexo = (tipoArquivo) => {
