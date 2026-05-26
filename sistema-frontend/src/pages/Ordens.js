@@ -745,12 +745,9 @@ function Ordens() {
                                             )}
 
                                             <select
-                                                value={formatarStatus(ordem.status)}
+                                                value={ordem.status}
                                                 onChange={(e) =>
-                                                    atualizarStatus(
-                                                        ordem.id,
-                                                        e.target.value
-                                                    )
+                                                    atualizarStatus(ordem.id, e.target.value)
                                                 }
                                                 style={{
                                                     padding: "8px",
