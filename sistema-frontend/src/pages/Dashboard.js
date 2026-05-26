@@ -121,6 +121,92 @@ function Dashboard() {
         };
     });
 
+    const obterEstiloStatus = (status) => {
+
+        switch (status) {
+
+            case "ABERTA":
+                return {
+                    background: "#0d6efd",
+                    color: "#fff"
+                };
+
+            case "EM_ANDAMENTO":
+                return {
+                    background: "#fd7e14",
+                    color: "#fff"
+                };
+
+            case "AGUARDANDO_PECA":
+                return {
+                    background: "#6f42c1",
+                    color: "#fff"
+                };
+
+            case "FINALIZADA":
+                return {
+                    background: "#198754",
+                    color: "#fff"
+                };
+
+            case "ENTREGUE":
+                return {
+                    background: "#20c997",
+                    color: "#fff"
+                };
+
+            case "CANCELADA":
+                return {
+                    background: "#dc3545",
+                    color: "#fff"
+                };
+
+            case "FECHADA":
+                return {
+                    background: "#6c757d",
+                    color: "#fff"
+                };
+
+            default:
+                return {
+                    background: "#6c757d",
+                    color: "#fff"
+                };
+        }
+    };
+
+    const formatarStatus = (status) => {
+
+        switch (status) {
+
+            case "ABERTA":
+                return "Aberta";
+
+            case "EM_ANDAMENTO":
+                return "Em andamento";
+
+            case "AGUARDANDO_PECA":
+                return "Aguardando peça";
+
+            case "FINALIZADA":
+                return "Finalizada";
+
+            case "ENTREGUE":
+                return "Entregue";
+
+            case "CANCELADA":
+                return "Cancelada";
+
+            case "FECHADA":
+                return "Fechada";
+
+            default:
+                return status;
+        }
+    };
+
+
+
     if (loading) {
         return <h2>Carregando dados...</h2>;
     }
@@ -252,13 +338,15 @@ function Dashboard() {
                                     <td style={darkMode ? styles.tdDark : styles.td}>{ordem.descricao}</td>
                                     <td style={darkMode ? styles.tdDark : styles.td}>
                                         <span
-                                            style={
-                                                ordem.status === "FECHADA"
-                                                    ? styles.statusFechada
-                                                    : styles.statusAberta
-                                            }
+                                            style={{
+                                                ...obterEstiloStatus(ordem.status),
+                                                padding: "6px 12px",
+                                                borderRadius: "999px",
+                                                fontSize: "12px",
+                                                fontWeight: "bold"
+                                            }}
                                         >
-                                            {ordem.status}
+                                            {formatarStatus(ordem.status)}
                                         </span>
                                     </td>
                                     <td style={darkMode ? styles.tdDark : styles.td}>{ordem.cliente?.nome}</td>
