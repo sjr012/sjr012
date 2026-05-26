@@ -83,9 +83,9 @@ function Dashboard() {
     };
 
     const ordensAbertas = ordens.filter((ordem) =>
-        ["ABERTA", "EM ANDAMENTO", "AGUARDANDO PEÇA"].includes(ordem.status)
+        ["ABERTA", "EM_ANDAMENTO", "AGUARDANDO_PECA"].includes(ordem.status)
     );
-    
+
     const ordensFechadas = ordens.filter((ordem) =>
         ["FECHADA", "FINALIZADA", "ENTREGUE"].includes(ordem.status)
     );
@@ -97,16 +97,18 @@ function Dashboard() {
             ? 0
             : Math.round((ordensFechadas.length / totalOrdens) * 100);
 
+    const contarStatus = (status) =>
+        ordens.filter((ordem) => ordem.status === status).length;
+
     const dadosStatus = [
-        {
-            name: "Abertas",
-            value: ordensAbertas.length
-        },
-        {
-            name: "Fechadas",
-            value: ordensFechadas.length
-        }
-    ];
+        { name: "Aberta", value: contarStatus("ABERTA") },
+        { name: "Em andamento", value: contarStatus("EM_ANDAMENTO") },
+        { name: "Aguardando peça", value: contarStatus("AGUARDANDO_PECA") },
+        { name: "Finalizada", value: contarStatus("FINALIZADA") },
+        { name: "Entregue", value: contarStatus("ENTREGUE") },
+        { name: "Cancelada", value: contarStatus("CANCELADA") },
+        { name: "Fechada antiga", value: contarStatus("FECHADA") }
+    ].filter((item) => item.value > 0);
 
     const dadosFuncionarios = funcionarios.map((funcionario) => {
         const total = ordens.filter(
@@ -172,8 +174,20 @@ function Dashboard() {
                                 outerRadius={90}
                                 label
                             >
-                                <Cell fill="#1e88e5" />
-                                <Cell fill="#28a745" />
+                                {dadosStatus.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={[
+                                            "#0d6efd",
+                                            "#fd7e14",
+                                            "#6f42c1",
+                                            "#198754",
+                                            "#20c997",
+                                            "#dc3545",
+                                            "#6c757d"
+                                        ][index]}
+                                    />
+                                ))}
                             </Pie>
                             <Tooltip />
                         </PieChart>
