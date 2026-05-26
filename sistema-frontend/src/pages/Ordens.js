@@ -870,7 +870,42 @@ function Ordens() {
                                 ))}
                             </tbody>
                         </table>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "10px",
+                                marginTop: "20px",
+                                flexWrap: "wrap"
+                            }}
+                        >
+                            <button
+                                style={theme.smallButton}
+                                disabled={paginaAtual === 1}
+                                onClick={() => setPaginaAtual(paginaAtual - 1)}
+                            >
+                                Anterior
+                            </button>
+
+                            <span
+                                style={{
+                                    fontWeight: "bold"
+                                }}
+                            >
+                                Página {paginaAtual} de {totalPaginas}
+                            </span>
+
+                            <button
+                                style={theme.smallButton}
+                                disabled={paginaAtual === totalPaginas}
+                                onClick={() => setPaginaAtual(paginaAtual + 1)}
+                            >
+                                Próxima
+                            </button>
+                        </div>
                     </div>
+
                 )}
             </section>
 
