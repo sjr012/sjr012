@@ -23,6 +23,8 @@ function Ordens() {
     const [descricao, setDescricao] = useState("");
     const [clienteId, setClienteId] = useState("");
     const [funcionarioId, setFuncionarioId] = useState("");
+    const [busca, setBusca] = useState("");
+    const [filtroStatus, setFiltroStatus] = useState("");
 
     const [editando, setEditando] = useState(false);
     const [ordemEditando, setOrdemEditando] = useState(null);
@@ -552,6 +554,21 @@ function Ordens() {
         }
     };
 
+    const ordensFiltradas = ordens.filter((ordem) => {
+        const textoBusca = busca.toLowerCase();
+
+        const correspondeBusca =
+            ordem.descricao?.toLowerCase().includes(textoBusca) ||
+            ordem.cliente?.nome?.toLowerCase().includes(textoBusca) ||
+            ordem.funcionario?.nome?.toLowerCase().includes(textoBusca) ||
+            String(ordem.id).includes(textoBusca);
+
+        const correspondeStatus =
+            filtroStatus === "" || ordem.status === filtroStatus;
+
+        return correspondeBusca && correspondeStatus;
+    });
+
     return (
 
         <div>
@@ -758,31 +775,31 @@ function Ordens() {
                                             >
 
                                                 <option value="ABERTA">
-                                                    ABERTA
+                                                    Aberta
                                                 </option>
 
                                                 <option value="EM_ANDAMENTO">
-                                                    EM ANDAMENTO
+                                                    Em andamento
                                                 </option>
 
                                                 <option value="AGUARDANDO_PECA">
-                                                    AGUARDANDO PEÇA
+                                                    Aguardando peça
                                                 </option>
 
                                                 <option value="FINALIZADA">
-                                                    FINALIZADA
+                                                    Finalizada
                                                 </option>
 
                                                 <option value="ENTREGUE">
-                                                    ENTREGUE
+                                                    Entregue
                                                 </option>
 
                                                 <option value="CANCELADA">
-                                                    CANCELADA
+                                                    Cancelada
                                                 </option>
 
                                                 <option value="FECHADA">
-                                                    FECHADA
+                                                    Fechada
                                                 </option>
 
                                             </select>
