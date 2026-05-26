@@ -164,6 +164,31 @@ function Ordens() {
         carregarDados();
     };
 
+    const atualizarStatus = async (id, status) => {
+
+        const response = await fetch(
+            `${API_URL}/ordens/${id}/status`,
+            {
+                method: "PUT",
+
+                headers: getAuthHeaders(),
+
+                body: JSON.stringify({
+                    status
+                })
+            }
+        );
+
+        if (!response.ok) {
+            toast.error("Erro ao atualizar status.");
+            return;
+        }
+
+        toast.success("Status atualizado!");
+
+        carregarDados();
+    };
+
     const carregarAnexos = async (ordemId) => {
         const response = await fetch(`${API_URL}/anexos/ordem/${ordemId}`, {
             headers: getAuthHeaders()
@@ -650,14 +675,47 @@ function Ordens() {
                                                 </>
                                             )}
 
-                                            {ordem.status !== "FECHADA" && (
-                                                <button
-                                                    style={theme.smallButton}
-                                                    onClick={() => fecharOrdem(ordem.id)}
-                                                >
-                                                    Fechar
-                                                </button>
-                                            )}
+                                            <select
+                                                value={ordem.status}
+                                                onChange={(e) =>
+                                                    atualizarStatus(
+                                                        ordem.id,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                style={{
+                                                    padding: "8px",
+                                                    borderRadius: "8px",
+                                                    border: "1px solid #ccc",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+
+                                                <option value="ABERTA">
+                                                    ABERTA
+                                                </option>
+
+                                                <option value="EM_ANDAMENTO">
+                                                    EM ANDAMENTO
+                                                </option>
+
+                                                <option value="AGUARDANDO_PECA">
+                                                    AGUARDANDO PEÇA
+                                                </option>
+
+                                                <option value="FINALIZADA">
+                                                    FINALIZADA
+                                                </option>
+
+                                                <option value="ENTREGUE">
+                                                    ENTREGUE
+                                                </option>
+
+                                                <option value="CANCELADA">
+                                                    CANCELADA
+                                                </option>
+
+                                            </select>
                                         </div>
                                     </td>
 
