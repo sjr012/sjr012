@@ -325,7 +325,14 @@ function Dashboard() {
                             <tr>
                                 <th style={darkMode ? styles.thDark : styles.th}>ID</th>
                                 <th style={darkMode ? styles.thDark : styles.th}>Descrição</th>
-                                <th style={darkMode ? styles.thDark : styles.th}>Status</th>
+                                <th
+                                    style={{
+                                        ...(darkMode ? styles.thDark : styles.th),
+                                        minWidth: "160px"
+                                    }}
+                                >
+                                    Status
+                                </th>
                                 <th style={darkMode ? styles.thDark : styles.th}>Cliente</th>
                                 <th style={darkMode ? styles.thDark : styles.th}>Funcionário</th>
                             </tr>
