@@ -340,10 +340,14 @@ function Dashboard() {
                                         <span
                                             style={{
                                                 ...obterEstiloStatus(ordem.status),
-                                                padding: "6px 12px",
+                                                padding: "8px 16px",
                                                 borderRadius: "999px",
+                                                fontWeight: "bold",
                                                 fontSize: "12px",
-                                                fontWeight: "bold"
+                                                display: "inline-block",
+                                                whiteSpace: "nowrap",
+                                                textAlign: "center",
+                                                minWidth: "120px"
                                             }}
                                         >
                                             {formatarStatus(ordem.status)}
