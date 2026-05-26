@@ -36,6 +36,10 @@ function Ordens() {
         carregarDados();
     }, []);
 
+    useEffect(() => {
+        setPaginaAtual(1);
+    }, [busca, filtroStatus]);
+
     const carregarDados = async () => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
 
