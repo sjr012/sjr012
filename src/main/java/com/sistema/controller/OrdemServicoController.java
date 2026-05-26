@@ -57,32 +57,34 @@ public class OrdemServicoController {
         return repo.save(ordem);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> atualizarStatus(
             @PathVariable("id") @NonNull Long id,
             @RequestBody OrdemServico dados) {
+
         OrdemServico ordem = repo.findById(id).orElse(null);
 
         if (ordem == null) {
             return ResponseEntity.notFound().build();
         }
 
-        ordem.setDescricao(dados.getDescricao());
-
-        if (dados.getStatus() != null && !dados.getStatus().isBlank()) {
-            ordem.setStatus(dados.getStatus());
+        if (dados.getStatus() == null || dados.getStatus().isBlank()) {
+            return ResponseEntity.badRequest().body("Status inválido");
         }
 
-        if (dados.getCliente() != null && dados.getCliente().getId() != null) {
-            @SuppressWarnings("null")
-            Cliente cliente = clienteRepository.findById(dados.getCliente().getId()).orElse(null);
-            ordem.setCliente(cliente);
-        }
+        ordem.setStatus(dados.getStatus());
 
-        if (dados.getFuncionario() != null && dados.getFuncionario().getId() != null) {
-            @SuppressWarnings("null")
-            Funcionario funcionario = funcionarioRepository.findById(dados.getFuncionario().getId()).orElse(null);
-            ordem.setFuncionario(funcionario);
+        // SE FINALIZAR
+        if (dados.getStatus().equals("FINALIZADA") ||
+                dados.getStatus().equals("ENTREGUE")) {
+
+            if (ordem.getDataFechamento() == null) {
+                ordem.setDataFechamento(LocalDateTime.now());
+            }
+
+        } else {
+
+            ordem.setDataFechamento(null);
         }
 
         return ResponseEntity.ok(repo.save(ordem));
