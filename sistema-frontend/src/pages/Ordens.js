@@ -636,6 +636,47 @@ function Ordens() {
 
             <section style={theme.panel}>
                 <h2>Ordens Cadastradas</h2>
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "12px",
+                        flexWrap: "wrap",
+                        marginBottom: "20px"
+                    }}
+                >
+                    <input
+                        style={{
+                            ...theme.input,
+                            flex: "1",
+                            minWidth: "220px"
+                        }}
+                        placeholder="Buscar por ID, descrição, cliente ou funcionário"
+                        value={busca}
+                        onChange={(e) => setBusca(e.target.value)}
+                    />
+
+                    <select
+                        style={{
+                            ...theme.input,
+                            maxWidth: "220px"
+                        }}
+                        value={filtroStatus}
+                        onChange={(e) => setFiltroStatus(e.target.value)}
+                    >
+                        <option value="">Todos os status</option>
+                        <option value="ABERTA">Aberta</option>
+                        <option value="EM_ANDAMENTO">Em andamento</option>
+                        <option value="AGUARDANDO_PECA">Aguardando peça</option>
+                        <option value="FINALIZADA">Finalizada</option>
+                        <option value="ENTREGUE">Entregue</option>
+                        <option value="CANCELADA">Cancelada</option>
+                        <option value="FECHADA">Fechada</option>
+                    </select>
+                </div>
+
+                <p>
+                    Exibindo {ordensFiltradas.length} de {ordens.length} ordens.
+                </p>
 
                 {ordens.length === 0 ? (
                     <p>Nenhuma ordem cadastrada.</p>
