@@ -82,8 +82,13 @@ function Dashboard() {
         }
     };
 
-    const ordensAbertas = ordens.filter((ordem) => ordem.status === "ABERTA");
-    const ordensFechadas = ordens.filter((ordem) => ordem.status === "FECHADA");
+    const ordensAbertas = ordens.filter((ordem) =>
+        ["ABERTA", "EM_ANDAMENTO", "AGUARDANDO_PECA"].includes(ordem.status)
+    );
+    
+    const ordensFechadas = ordens.filter((ordem) =>
+        ["FECHADA", "FINALIZADA", "ENTREGUE"].includes(ordem.status)
+    );
 
     const totalOrdens = ordens.length;
 
