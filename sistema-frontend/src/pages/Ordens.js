@@ -554,20 +554,22 @@ function Ordens() {
         }
     };
 
-    const ordensFiltradas = ordens.filter((ordem) => {
-        const textoBusca = busca.toLowerCase();
+    const ordensFiltradas = ordens
+        .filter((ordem) => {
+            const textoBusca = busca.toLowerCase();
 
-        const correspondeBusca =
-            ordem.descricao?.toLowerCase().includes(textoBusca) ||
-            ordem.cliente?.nome?.toLowerCase().includes(textoBusca) ||
-            ordem.funcionario?.nome?.toLowerCase().includes(textoBusca) ||
-            String(ordem.id).includes(textoBusca);
+            const correspondeBusca =
+                ordem.descricao?.toLowerCase().includes(textoBusca) ||
+                ordem.cliente?.nome?.toLowerCase().includes(textoBusca) ||
+                ordem.funcionario?.nome?.toLowerCase().includes(textoBusca) ||
+                String(ordem.id).includes(textoBusca);
 
-        const correspondeStatus =
-            filtroStatus === "" || ordem.status === filtroStatus;
+            const correspondeStatus =
+                filtroStatus === "" || ordem.status === filtroStatus;
 
-        return correspondeBusca && correspondeStatus;
-    });
+            return correspondeBusca && correspondeStatus;
+        })
+        .sort((a, b) => b.id - a.id);
 
     return (
 
