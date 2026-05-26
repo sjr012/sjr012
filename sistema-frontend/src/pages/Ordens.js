@@ -61,6 +61,34 @@ function Ordens() {
         }
     };
 
+    const obterEstiloStatus = (status) => {
+        switch (status) {
+            case "ABERTA":
+                return { background: "#0d6efd", color: "#fff" };
+
+            case "EM_ANDAMENTO":
+                return { background: "#fd7e14", color: "#fff" };
+
+            case "AGUARDANDO_PECA":
+                return { background: "#6f42c1", color: "#fff" };
+
+            case "FINALIZADA":
+                return { background: "#198754", color: "#fff" };
+
+            case "ENTREGUE":
+                return { background: "#20c997", color: "#fff" };
+
+            case "CANCELADA":
+                return { background: "#dc3545", color: "#fff" };
+
+            case "FECHADA":
+                return { background: "#6c757d", color: "#fff" };
+
+            default:
+                return { background: "#6c757d", color: "#fff" };
+        }
+    };
+
     const styles = {
         actionButtons: {
             display: "flex",
@@ -602,11 +630,13 @@ function Ordens() {
 
                                     <td style={theme.td}>
                                         <span
-                                            style={
-                                                ordem.status === "FECHADA"
-                                                    ? theme.statusFechada
-                                                    : theme.statusAberta
-                                            }
+                                            style={{
+                                                ...obterEstiloStatus(ordem.status),
+                                                padding: "8px 12px",
+                                                borderRadius: "999px",
+                                                fontWeight: "bold",
+                                                fontSize: "12px"
+                                            }}
                                         >
                                             {ordem.status}
                                         </span>
