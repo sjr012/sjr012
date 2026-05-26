@@ -92,6 +92,33 @@ function OrdemDetalhe() {
         link.remove();
     };
 
+    const obterIconeAnexo = (tipoArquivo) => {
+
+        if (!tipoArquivo) return "📎";
+
+        if (tipoArquivo.startsWith("image/")) {
+            return "🖼️";
+        }
+
+        if (tipoArquivo === "application/pdf") {
+            return "📄";
+        }
+
+        if (
+            tipoArquivo === "application/zip" ||
+            tipoArquivo === "application/x-zip-compressed"
+        ) {
+            return "🗜️";
+        }
+
+        return "📎";
+    };
+
+    const isImagem = (tipoArquivo) => {
+
+        return tipoArquivo?.startsWith("image/");
+    };
+
     const formatarDataHora = (valor) => {
 
         if (!valor) return "Em aberto";
@@ -551,33 +578,31 @@ function OrdemDetalhe() {
 
                             <div
                                 key={anexo.id}
-                                style={{
-                                    border: "1px solid rgba(255,255,255,0.08)",
-                                    borderRadius: "12px",
-                                    padding: "15px"
-                                }}
+                                style={darkMode ? styles.anexoCardDark : styles.anexoCard}
                             >
+                                {isImagem(anexo.tipoArquivo) ? (
+                                    <img
+                                        src={anexo.caminhoArquivo}
+                                        alt={anexo.nomeArquivo}
+                                        style={styles.anexoImagem}
+                                    />
+                                ) : (
+                                    <div style={styles.anexoIcone}>
+                                        {obterIconeAnexo(anexo.tipoArquivo)}
+                                    </div>
+                                )}
 
-                                <h4>
+                                <h4 style={styles.anexoNome}>
                                     {anexo.nomeArquivo}
                                 </h4>
 
-                                <p>
+                                <p style={styles.anexoTipo}>
                                     {anexo.tipoArquivo}
                                 </p>
 
-                                <div style={{
-                                    display: "flex",
-                                    gap: "10px",
-                                    flexWrap: "wrap",
-                                    marginTop: "10px"
-                                }}>
-
+                                <div style={styles.anexoAcoes}>
                                     <button
-                                        style={{
-                                            ...styles.button,
-                                            background: "#0d6efd"
-                                        }}
+                                        style={styles.linkButton}
                                         onClick={() => visualizarAnexo(anexo)}
                                     >
                                         Visualizar
@@ -585,16 +610,14 @@ function OrdemDetalhe() {
 
                                     <button
                                         style={{
-                                            ...styles.button,
+                                            ...styles.linkButton,
                                             background: "#198754"
                                         }}
                                         onClick={() => baixarAnexo(anexo)}
                                     >
                                         Baixar
                                     </button>
-
                                 </div>
-
                             </div>
 
                         ))}
@@ -705,6 +728,58 @@ const styles = {
         fontWeight: "bold",
 
         fontSize: "14px"
+    }
+
+    anexoCard: {
+        background: "#fff",
+        border: "1px solid #e5e7eb",
+        borderRadius: "14px",
+        padding: "15px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.06)"
+    },
+
+    anexoCardDark: {
+        background: "#111827",
+        border: "1px solid #374151",
+        borderRadius: "14px",
+        padding: "15px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.35)"
+    },
+
+    anexoImagem: {
+        width: "100%",
+        height: "160px",
+        objectFit: "cover",
+        borderRadius: "10px",
+        marginBottom: "12px"
+    },
+
+    anexoIcone: {
+        height: "160px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "56px",
+        background: "#f3f4f6",
+        borderRadius: "10px",
+        marginBottom: "12px"
+    },
+
+    anexoNome: {
+        margin: "0 0 6px",
+        wordBreak: "break-word"
+    },
+
+    anexoTipo: {
+        fontSize: "13px",
+        opacity: 0.75,
+        marginBottom: "12px"
+    },
+
+    anexoAcoes: {
+        display: "flex",
+        gap: "10px",
+        flexWrap: "wrap"
     }
 
 };
