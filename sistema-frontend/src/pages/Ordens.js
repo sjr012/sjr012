@@ -683,176 +683,183 @@ function Ordens() {
                 {ordens.length === 0 ? (
                     <p>Nenhuma ordem cadastrada.</p>
                 ) : (
-                    <table style={theme.table}>
-                        <thead>
-                            <tr>
-                                <th style={theme.th}>ID</th>
+                    <div style={{ overflowX: "auto" }}>
+                        <table
+                            style={{
+                                ...theme.table,
+                                minWidth: "1200px"
+                            }}
+                        >
+                            <thead>
+                                <tr>
+                                    <th style={theme.th}>ID</th>
 
-                                <th style={theme.th}>Descrição</th>
+                                    <th style={theme.th}>Descrição</th>
 
-                                <th
-                                    style={{
-                                        ...theme.th,
-                                        minWidth: "160px"
-                                    }}
-                                >
-                                    Status
-                                </th>
+                                    <th
+                                        style={{
+                                            ...theme.th,
+                                            minWidth: "160px"
+                                        }}
+                                    >
+                                        Status
+                                    </th>
 
-                                <th style={theme.th}>Cliente</th>
+                                    <th style={theme.th}>Cliente</th>
 
-                                <th style={theme.th}>Funcionário</th>
+                                    <th style={theme.th}>Funcionário</th>
 
-                                <th style={theme.th}>Abertura</th>
+                                    <th style={theme.th}>Abertura</th>
 
-                                <th style={theme.th}>Fechamento</th>
+                                    <th style={theme.th}>Fechamento</th>
 
-                                <th style={theme.th}>Ação</th>
-                            </tr>
-                        </thead>
+                                    <th style={theme.th}>Ação</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            {ordensFiltradas.map((ordem) => (
-                                <tr key={ordem.id}>
+                            <tbody>
+                                {ordensFiltradas.map((ordem) => (
+                                    <tr key={ordem.id}>
 
-                                    <td style={theme.td}>
-                                        {ordem.id}
-                                    </td>
+                                        <td style={theme.td}>
+                                            {ordem.id}
+                                        </td>
 
-                                    <td style={theme.td}>
-                                        {ordem.descricao}
-                                    </td>
+                                        <td style={theme.td}>
+                                            {ordem.descricao}
+                                        </td>
 
-                                    <td style={theme.td}>
-                                        <span
-                                            style={{
-                                                ...obterEstiloStatus(ordem.status),
-                                                padding: "8px 16px",
-                                                borderRadius: "999px",
-                                                fontWeight: "bold",
-                                                fontSize: "12px",
-                                                display: "inline-block",
-                                                whiteSpace: "nowrap",
-                                                textAlign: "center",
-                                                minWidth: "120px"
-                                            }}
-                                        >
-                                            {formatarStatus(ordem.status)}
-                                        </span>
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {ordem.cliente?.nome}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {ordem.funcionario?.nome}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {formatarDataHora(ordem.dataAbertura)}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        {ordem.dataFechamento
-                                            ? formatarDataHora(ordem.dataFechamento)
-                                            : "Em aberto"}
-                                    </td>
-
-                                    <td style={theme.td}>
-                                        <div style={styles.actionButtons}>
-
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => navigate(`/ordens/${ordem.id}`)}
-                                            >
-                                                Detalhes
-                                            </button>
-
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => gerarPdfOrdem(ordem)}
-                                            >
-                                                PDF
-                                            </button>
-
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() => carregarAnexos(ordem.id)}
-                                            >
-                                                Anexos
-                                            </button>
-
-                                            {isAdmin && (
-                                                <>
-                                                    <button
-                                                        style={theme.smallButton}
-                                                        onClick={() => editarOrdem(ordem)}
-                                                    >
-                                                        Editar
-                                                    </button>
-
-                                                    <button
-                                                        style={{
-                                                            ...theme.smallButton,
-                                                            background: "#d9534f"
-                                                        }}
-                                                        onClick={() => excluirOrdem(ordem.id)}
-                                                    >
-                                                        Excluir
-                                                    </button>
-                                                </>
-                                            )}
-
-                                            <select
-                                                value={ordem.status}
-                                                onChange={(e) =>
-                                                    atualizarStatus(ordem.id, e.target.value)
-                                                }
+                                        <td style={theme.td}>
+                                            <span
                                                 style={{
-                                                    padding: "8px",
-                                                    borderRadius: "8px",
-                                                    border: "1px solid #ccc",
-                                                    fontWeight: "bold"
+                                                    ...obterEstiloStatus(ordem.status),
+                                                    padding: "8px 16px",
+                                                    borderRadius: "999px",
+                                                    fontWeight: "bold",
+                                                    fontSize: "12px",
+                                                    display: "inline-block",
+                                                    whiteSpace: "nowrap",
+                                                    textAlign: "center",
+                                                    minWidth: "120px"
                                                 }}
                                             >
+                                                {formatarStatus(ordem.status)}
+                                            </span>
+                                        </td>
 
-                                                <option value="ABERTA">
-                                                    Aberta
-                                                </option>
+                                        <td style={theme.td}>
+                                            {ordem.cliente?.nome}
+                                        </td>
 
-                                                <option value="EM_ANDAMENTO">
-                                                    Em andamento
-                                                </option>
+                                        <td style={theme.td}>
+                                            {ordem.funcionario?.nome}
+                                        </td>
 
-                                                <option value="AGUARDANDO_PECA">
-                                                    Aguardando peça
-                                                </option>
+                                        <td style={theme.td}>
+                                            {formatarDataHora(ordem.dataAbertura)}
+                                        </td>
 
-                                                <option value="FINALIZADA">
-                                                    Finalizada
-                                                </option>
+                                        <td style={theme.td}>
+                                            {ordem.dataFechamento
+                                                ? formatarDataHora(ordem.dataFechamento)
+                                                : "Em aberto"}
+                                        </td>
 
-                                                <option value="ENTREGUE">
-                                                    Entregue
-                                                </option>
+                                        <td style={theme.td}>
+                                            <div style={styles.actionButtons}>
 
-                                                <option value="CANCELADA">
-                                                    Cancelada
-                                                </option>
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() => navigate(`/ordens/${ordem.id}`)}
+                                                >
+                                                    Detalhes
+                                                </button>
 
-                                                <option value="FECHADA">
-                                                    Fechada
-                                                </option>
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() => gerarPdfOrdem(ordem)}
+                                                >
+                                                    PDF
+                                                </button>
 
-                                            </select>
-                                        </div>
-                                    </td>
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() => carregarAnexos(ordem.id)}
+                                                >
+                                                    Anexos
+                                                </button>
 
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                                {isAdmin && (
+                                                    <>
+                                                        <button
+                                                            style={theme.smallButton}
+                                                            onClick={() => editarOrdem(ordem)}
+                                                        >
+                                                            Editar
+                                                        </button>
+
+                                                        <button
+                                                            style={{
+                                                                ...theme.smallButton,
+                                                                background: "#d9534f"
+                                                            }}
+                                                            onClick={() => excluirOrdem(ordem.id)}
+                                                        >
+                                                            Excluir
+                                                        </button>
+                                                    </>
+                                                )}
+
+                                                <select
+                                                    value={ordem.status}
+                                                    onChange={(e) =>
+                                                        atualizarStatus(ordem.id, e.target.value)
+                                                    }
+                                                    style={{
+                                                        padding: "8px",
+                                                        borderRadius: "8px",
+                                                        border: "1px solid #ccc",
+                                                        fontWeight: "bold"
+                                                    }}
+                                                >
+
+                                                    <option value="ABERTA">
+                                                        Aberta
+                                                    </option>
+
+                                                    <option value="EM_ANDAMENTO">
+                                                        Em andamento
+                                                    </option>
+
+                                                    <option value="AGUARDANDO_PECA">
+                                                        Aguardando peça
+                                                    </option>
+
+                                                    <option value="FINALIZADA">
+                                                        Finalizada
+                                                    </option>
+
+                                                    <option value="ENTREGUE">
+                                                        Entregue
+                                                    </option>
+
+                                                    <option value="CANCELADA">
+                                                        Cancelada
+                                                    </option>
+
+                                                    <option value="FECHADA">
+                                                        Fechada
+                                                    </option>
+
+                                                </select>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </section>
 
