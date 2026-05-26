@@ -714,21 +714,14 @@ const styles = {
 
     button: {
         background: "#198754",
-
         color: "#fff",
-
         border: "none",
-
         padding: "12px 22px",
-
         borderRadius: "10px",
-
         cursor: "pointer",
-
         fontWeight: "bold",
-
         fontSize: "14px"
-    }
+    },
 
     anexoCard: {
         background: "#fff",
