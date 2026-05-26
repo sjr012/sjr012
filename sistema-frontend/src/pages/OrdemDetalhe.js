@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import QRCode from "qrcode";
+import { useNavigate, useParams } from "react-router-dom";
 
 import API_URL, {
     getAuthHeaders,
@@ -12,6 +13,8 @@ import API_URL, {
 function OrdemDetalhe() {
 
     const { id } = useParams();
+
+    const navigate = useNavigate();
 
     const [ordem, setOrdem] = useState(null);
 
@@ -645,6 +648,16 @@ function OrdemDetalhe() {
                 gap: "15px",
                 flexWrap: "wrap"
             }}>
+
+                <button
+                    style={{
+                        ...styles.button,
+                        background: "#6c757d"
+                    }}
+                    onClick={() => navigate("/ordens")}
+                >
+                    Voltar
+                </button>
 
                 <button
                     style={styles.button}
