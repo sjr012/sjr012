@@ -83,7 +83,7 @@ function Dashboard() {
     };
 
     const ordensAbertas = ordens.filter((ordem) =>
-        ["ABERTA", "EM_ANDAMENTO", "AGUARDANDO_PECA"].includes(ordem.status)
+        ["ABERTA", "EM ANDAMENTO", "AGUARDANDO PECA"].includes(ordem.status)
     );
     
     const ordensFechadas = ordens.filter((ordem) =>

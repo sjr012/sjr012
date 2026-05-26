@@ -695,11 +695,11 @@ function Ordens() {
                                                     ABERTA
                                                 </option>
 
-                                                <option value="EM_ANDAMENTO">
+                                                <option value="EM ANDAMENTO">
                                                     EM ANDAMENTO
                                                 </option>
 
-                                                <option value="AGUARDANDO_PECA">
+                                                <option value="AGUARDANDO PECA">
                                                     AGUARDANDO PEÇA
                                                 </option>
 
