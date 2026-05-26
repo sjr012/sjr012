@@ -66,10 +66,10 @@ function Ordens() {
             case "ABERTA":
                 return { background: "#0d6efd", color: "#fff" };
 
-            case "EM_ANDAMENTO":
+            case "EM ANDAMENTO":
                 return { background: "#fd7e14", color: "#fff" };
 
-            case "AGUARDANDO_PECA":
+            case "AGUARDANDO PEÇA":
                 return { background: "#6f42c1", color: "#fff" };
 
             case "FINALIZADA":
