@@ -630,7 +630,14 @@ function Ordens() {
 
                                 <th style={theme.th}>Descrição</th>
 
-                                <th style={theme.th}>Status</th>
+                                <th
+                                    style={{
+                                        ...theme.th,
+                                        minWidth: "160px"
+                                    }}
+                                >
+                                    Status
+                                </th>
 
                                 <th style={theme.th}>Cliente</th>
 
@@ -660,10 +667,14 @@ function Ordens() {
                                         <span
                                             style={{
                                                 ...obterEstiloStatus(ordem.status),
-                                                padding: "8px 12px",
+                                                padding: "8px 16px",
                                                 borderRadius: "999px",
                                                 fontWeight: "bold",
-                                                fontSize: "12px"
+                                                fontSize: "12px",
+                                                display: "inline-block",
+                                                whiteSpace: "nowrap",
+                                                textAlign: "center",
+                                                minWidth: "120px"
                                             }}
                                         >
                                             {formatarStatus(ordem.status)}
