@@ -669,7 +669,7 @@ function Ordens() {
                         </thead>
 
                         <tbody>
-                            {ordens.map((ordem) => (
+                            {ordensFiltradas.map((ordem) => (
                                 <tr key={ordem.id}>
 
                                     <td style={theme.td}>
