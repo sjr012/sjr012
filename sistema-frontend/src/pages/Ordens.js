@@ -741,12 +741,7 @@ function Ordens() {
                                                         e.target.value
                                                     )
                                                 }
-                                                style={{
-                                                    padding: "8px",
-                                                    borderRadius: "8px",
-                                                    border: "1px solid #ccc",
-                                                    fontWeight: "bold"
-                                                }}
+                                                
                                             >
 
                                                 <option value="ABERTA">
