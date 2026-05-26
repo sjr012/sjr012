@@ -666,7 +666,7 @@ function Ordens() {
                                                 fontSize: "12px"
                                             }}
                                         >
-                                            {ordem.status}
+                                            {formatarStatus(ordem.status)}
                                         </span>
                                     </td>
 
