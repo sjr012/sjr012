@@ -29,6 +29,9 @@ function Ordens() {
     const [editando, setEditando] = useState(false);
     const [ordemEditando, setOrdemEditando] = useState(null);
 
+    const [paginaAtual, setPaginaAtual] = useState(1);
+    const itensPorPagina = 10;
+
     useEffect(() => {
         carregarDados();
     }, []);
@@ -572,6 +575,13 @@ function Ordens() {
         })
         .sort((a, b) => b.id - a.id);
 
+    const totalPaginas = Math.ceil(ordensFiltradas.length / itensPorPagina);
+
+    const ordensPaginadas = ordensFiltradas.slice(
+        (paginaAtual - 1) * itensPorPagina,
+        paginaAtual * itensPorPagina
+    );
+
     return (
 
         <div>
@@ -719,7 +729,7 @@ function Ordens() {
                             </thead>
 
                             <tbody>
-                                {ordensFiltradas.map((ordem) => (
+                                {ordensPaginadas.map((ordem) => (
                                     <tr key={ordem.id}>
 
                                         <td style={theme.td}>
