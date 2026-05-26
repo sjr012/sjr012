@@ -773,6 +773,10 @@ function Ordens() {
                                                     CANCELADA
                                                 </option>
 
+                                                <option value="FECHADA">
+                                                    FECHADA
+                                                </option>
+
                                             </select>
                                         </div>
                                     </td>
