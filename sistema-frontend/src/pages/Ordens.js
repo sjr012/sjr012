@@ -96,7 +96,7 @@ function Ordens() {
             display: "flex",
             flexWrap: "wrap",
             gap: "8px",
-            alignItems: "center"
+            alignItems: "center",
             justifyContent: "center"
         }
     };
