@@ -57,6 +57,45 @@ public class OrdemServicoController {
         return repo.save(ordem);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(
+            @PathVariable("id") @NonNull Long id,
+            @RequestBody OrdemServico dados) {
+
+        OrdemServico ordem = repo.findById(id).orElse(null);
+
+        if (ordem == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ordem.setDescricao(dados.getDescricao());
+
+        if (dados.getStatus() != null && !dados.getStatus().isBlank()) {
+            ordem.setStatus(dados.getStatus());
+        }
+
+        if (dados.getCliente() != null && dados.getCliente().getId() != null) {
+
+            Cliente cliente = clienteRepository
+                    .findById(dados.getCliente().getId())
+                    .orElse(null);
+
+            ordem.setCliente(cliente);
+        }
+
+        if (dados.getFuncionario() != null &&
+                dados.getFuncionario().getId() != null) {
+
+            Funcionario funcionario = funcionarioRepository
+                    .findById(dados.getFuncionario().getId())
+                    .orElse(null);
+
+            ordem.setFuncionario(funcionario);
+        }
+
+        return ResponseEntity.ok(repo.save(ordem));
+    }
+
     @PutMapping("/{id}/status")
     public ResponseEntity<?> atualizarStatus(
             @PathVariable("id") @NonNull Long id,
