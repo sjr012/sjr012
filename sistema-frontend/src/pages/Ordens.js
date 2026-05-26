@@ -66,10 +66,10 @@ function Ordens() {
             case "ABERTA":
                 return { background: "#0d6efd", color: "#fff" };
 
-            case "EM ANDAMENTO":
+            case "EM_ANDAMENTO":
                 return { background: "#fd7e14", color: "#fff" };
 
-            case "AGUARDANDO PEÇA":
+            case "AGUARDANDO_PECA":
                 return { background: "#6f42c1", color: "#fff" };
 
             case "FINALIZADA":
@@ -524,6 +524,34 @@ function Ordens() {
     const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
     const isAdmin = usuarioLogado?.tipo === "ADMIN";
 
+    const formatarStatus = (status) => {
+        switch (status) {
+            case "ABERTA":
+                return "Aberta";
+
+            case "EM_ANDAMENTO":
+                return "Em andamento";
+
+            case "AGUARDANDO_PECA":
+                return "Aguardando peça";
+
+            case "FINALIZADA":
+                return "Finalizada";
+
+            case "ENTREGUE":
+                return "Entregue";
+
+            case "CANCELADA":
+                return "Cancelada";
+
+            case "FECHADA":
+                return "Fechada";
+
+            default:
+                return status;
+        }
+    };
+
     return (
 
         <div>
@@ -706,7 +734,7 @@ function Ordens() {
                                             )}
 
                                             <select
-                                                value={ordem.status}
+                                                value={formatarStatus(ordem.status)}
                                                 onChange={(e) =>
                                                     atualizarStatus(
                                                         ordem.id,
