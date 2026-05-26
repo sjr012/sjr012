@@ -97,6 +97,7 @@ function Ordens() {
             flexWrap: "wrap",
             gap: "8px",
             alignItems: "center"
+            justifyContent: "center"
         }
     };
 
