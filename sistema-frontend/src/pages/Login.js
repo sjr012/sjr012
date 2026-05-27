@@ -19,27 +19,43 @@ function Login() {
     }, []);
 
     const handleLogin = async () => {
-        const response = await fetch(`${API_URL}/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ login, senha })
-        });
 
-        if (!response.ok) {
-            toast.error("Login inválido!");
-            return;
+        if (carregando) return;
+
+        setCarregando(true);
+
+        try {
+
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ login, senha })
+            });
+
+            if (!response.ok) {
+                toast.error("Login inválido!");
+                return;
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+            toast.success("Login realizado com sucesso!");
+
+            navigate("/dashboard");
+
+        } catch (error) {
+
+            toast.error("Erro ao conectar com o servidor.");
+
+        } finally {
+
+            setCarregando(false);
         }
-
-        const data = await response.json();
-
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("usuario", JSON.stringify(data.usuario));
-
-        toast.success("Login realizado com sucesso!");
-
-        navigate("/dashboard");
     };
 
     return (
@@ -68,7 +84,7 @@ function Login() {
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                     onKeyDown={(e) => {
-                        if (e.key === "Enter") {
+                        if (e.key === "Enter" && !carregando) {
                             handleLogin();
                         }
                     }}
