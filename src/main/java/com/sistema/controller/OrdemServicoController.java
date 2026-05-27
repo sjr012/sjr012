@@ -12,7 +12,10 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/ordens")
@@ -33,8 +36,13 @@ public class OrdemServicoController {
     }
 
     @GetMapping
-    public List<OrdemServico> listar() {
-        return repo.findAll();
+    public Page<OrdemServico> listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return repo.findAll(pageable);
     }
 
     @GetMapping("/{id}")
