@@ -8,6 +8,8 @@ function Login() {
     const [login, setLogin] = useState("");
     const [senha, setSenha] = useState("");
 
+    const [carregando, setCarregando] = useState(false);
+
     const navigate = useNavigate();
 
     const loginInputRef = useRef(null);
@@ -53,7 +55,7 @@ function Login() {
                     value={login}
                     onChange={(e) => setLogin(e.target.value)}
                     onKeyDown={(e) => {
-                        if (e.key === "Enter") {
+                        if (e.key === "Enter" && !carregando) {
                             handleLogin();
                         }
                     }}
@@ -72,8 +74,16 @@ function Login() {
                     }}
                 />
 
-                <button style={styles.button} onClick={handleLogin}>
-                    Entrar
+                <button
+                    style={{
+                        ...styles.button,
+                        opacity: carregando ? 0.7 : 1,
+                        cursor: carregando ? "not-allowed" : "pointer"
+                    }}
+                    disabled={carregando}
+                    onClick={handleLogin}
+                >
+                    {carregando ? "Entrando..." : "Entrar"}
                 </button>
             </div>
         </div>
