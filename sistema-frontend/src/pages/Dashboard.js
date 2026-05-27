@@ -52,13 +52,14 @@ function Dashboard() {
 
             if (usuario?.tipo === "ADMIN") {
                 const [ordensRes, clientesRes, funcionariosRes] = await Promise.all([
-                    apiFetch(`${API_URL}/ordens`),
+                    apiFetch(`${API_URL}/ordens?page=0&size=100`),
                     apiFetch(`${API_URL}/clientes`),
                     apiFetch(`${API_URL}/funcionarios`)
                 ]);
 
                 if (ordensRes.ok) {
-                    setOrdens(await ordensRes.json());
+                    const data = await ordensRes.json();
+                    setOrdens(data.content || []);
                 }
 
                 if (clientesRes.ok) {
@@ -73,7 +74,8 @@ function Dashboard() {
                 const ordensRes = await apiFetch(`${API_URL}/ordens`);
 
                 if (ordensRes.ok) {
-                    setOrdens(await ordensRes.json());
+                    const data = await ordensRes.json();
+                    setOrdens(data.content || []);
                 }
             }
 
