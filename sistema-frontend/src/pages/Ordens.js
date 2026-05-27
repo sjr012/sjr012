@@ -589,11 +589,6 @@ function Ordens() {
         })
         .sort((a, b) => b.id - a.id);
 
-    const ordensPaginadas = ordensFiltradas.slice(
-        (paginaAtual - 1) * itensPorPagina,
-        paginaAtual * itensPorPagina
-    );
-
     return (
 
         <div>
@@ -741,7 +736,7 @@ function Ordens() {
                             </thead>
 
                             <tbody>
-                                {ordensPaginadas.map((ordem) => (
+                                {ordensFiltradas.map((ordem) => (
                                     <tr key={ordem.id}>
 
                                         <td style={theme.td}>
