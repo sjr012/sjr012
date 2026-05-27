@@ -48,7 +48,11 @@ function Ordens() {
         });
 
         if (ordensRes.ok) {
-            setOrdens(await ordensRes.json());
+
+            const data = await ordensRes.json();
+
+            setOrdens(data.content || []);
+
         }
 
         if (usuario?.tipo === "ADMIN") {
