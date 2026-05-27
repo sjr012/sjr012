@@ -589,8 +589,6 @@ function Ordens() {
         })
         .sort((a, b) => b.id - a.id);
 
-    const totalPaginasBackend = Math.ceil(ordensFiltradas.length / itensPorPagina);
-
     const ordensPaginadas = ordensFiltradas.slice(
         (paginaAtual - 1) * itensPorPagina,
         paginaAtual * itensPorPagina
