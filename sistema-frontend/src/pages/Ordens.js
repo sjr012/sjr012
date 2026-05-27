@@ -30,6 +30,8 @@ function Ordens() {
     const [ordemEditando, setOrdemEditando] = useState(null);
 
     const [paginaAtual, setPaginaAtual] = useState(1);
+    const [totalPaginasBackend, setTotalPaginasBackend] = useState(1);
+
     const itensPorPagina = 10;
 
     useEffect(() => {
@@ -43,15 +45,19 @@ function Ordens() {
     const carregarDados = async () => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-        const ordensRes = await fetch(`${API_URL}/ordens`, {
-            headers: getAuthHeaders()
-        });
+        const ordensRes = await fetch(
+            `${API_URL}/ordens?page=${paginaAtual - 1}&size=${itensPorPagina}`,
+            {
+                headers: getAuthHeaders()
+            }
+        );
 
         if (ordensRes.ok) {
 
             const data = await ordensRes.json();
 
             setOrdens(data.content || []);
+            setTotalPaginasBackend(data.totalPages || 1);
 
         }
 
@@ -583,7 +589,7 @@ function Ordens() {
         })
         .sort((a, b) => b.id - a.id);
 
-    const totalPaginas = Math.ceil(ordensFiltradas.length / itensPorPagina);
+    const totalPaginasBackend = Math.ceil(ordensFiltradas.length / itensPorPagina);
 
     const ordensPaginadas = ordensFiltradas.slice(
         (paginaAtual - 1) * itensPorPagina,
@@ -901,12 +907,12 @@ function Ordens() {
                                     fontWeight: "bold"
                                 }}
                             >
-                                Página {paginaAtual} de {totalPaginas}
+                                Página {paginaAtual} de {totalPaginasBackend}
                             </span>
 
                             <button
                                 style={theme.smallButton}
-                                disabled={paginaAtual === totalPaginas}
+                                disabled={paginaAtual === totalPaginasBackend}
                                 onClick={() => setPaginaAtual(paginaAtual + 1)}
                             >
                                 Próxima
