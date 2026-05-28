@@ -49,7 +49,6 @@ function Dashboard() {
         setLoading(true);
 
         try {
-            setLoading(true);
 
             const usuario = JSON.parse(localStorage.getItem("usuario"));
 
