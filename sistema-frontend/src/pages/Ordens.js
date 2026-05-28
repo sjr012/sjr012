@@ -36,7 +36,7 @@ function Ordens() {
 
     useEffect(() => {
         carregarDados();
-    }, []);
+    }, [paginaAtual]);
 
     useEffect(() => {
         setPaginaAtual(1);
@@ -45,38 +45,56 @@ function Ordens() {
     const carregarDados = async () => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-        const ordensRes = await fetch(
-            `${API_URL}/ordens?page=${paginaAtual - 1}&size=${itensPorPagina}`,
-            {
-                headers: getAuthHeaders()
+        try {
+            if (usuario?.tipo === "ADMIN") {
+                const [ordensRes, clientesRes, funcionariosRes] = await Promise.all([
+                    fetch(
+                        `${API_URL}/ordens?page=${paginaAtual - 1}&size=${itensPorPagina}`,
+                        {
+                            headers: getAuthHeaders()
+                        }
+                    ),
+                    fetch(`${API_URL}/clientes`, {
+                        headers: getAuthHeaders()
+                    }),
+                    fetch(`${API_URL}/funcionarios`, {
+                        headers: getAuthHeaders()
+                    })
+                ]);
+
+                if (ordensRes.ok) {
+                    const data = await ordensRes.json();
+
+                    setOrdens(data.content || []);
+                    setTotalPaginasBackend(data.totalPages || 1);
+                }
+
+                if (clientesRes.ok) {
+                    setClientes(await clientesRes.json());
+                }
+
+                if (funcionariosRes.ok) {
+                    setFuncionarios(await funcionariosRes.json());
+                }
+
+            } else {
+                const ordensRes = await fetch(
+                    `${API_URL}/ordens?page=${paginaAtual - 1}&size=${itensPorPagina}`,
+                    {
+                        headers: getAuthHeaders()
+                    }
+                );
+
+                if (ordensRes.ok) {
+                    const data = await ordensRes.json();
+
+                    setOrdens(data.content || []);
+                    setTotalPaginasBackend(data.totalPages || 1);
+                }
             }
-        );
 
-        if (ordensRes.ok) {
-
-            const data = await ordensRes.json();
-
-            setOrdens(data.content || []);
-            setTotalPaginasBackend(data.totalPages || 1);
-
-        }
-
-        if (usuario?.tipo === "ADMIN") {
-            const clientesRes = await fetch(`${API_URL}/clientes`, {
-                headers: getAuthHeaders()
-            });
-
-            const funcionariosRes = await fetch(`${API_URL}/funcionarios`, {
-                headers: getAuthHeaders()
-            });
-
-            if (clientesRes.ok) {
-                setClientes(await clientesRes.json());
-            }
-
-            if (funcionariosRes.ok) {
-                setFuncionarios(await funcionariosRes.json());
-            }
+        } catch (error) {
+            toast.error("Erro ao carregar dados.");
         }
     };
 
