@@ -221,18 +221,6 @@ function Dashboard() {
                 Dashboard
             </h1>
 
-            {loading && (
-                <p
-                    style={{
-                        fontWeight: "bold",
-                        color: "#1e88e5",
-                        marginBottom: "20px"
-                    }}
-                >
-                    Carregando dados do dashboard...
-                </p>
-            )}
-
             <p style={{ color: darkMode ? "#d1d5db" : "#444" }}>
                 Sistema de ordens de serviço, podendo se tornar um sistema de gestão completo para pequenas empresas, com módulos de estoque, financeiro e relatórios personalizados.
             </p>
