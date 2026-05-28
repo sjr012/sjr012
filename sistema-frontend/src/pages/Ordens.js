@@ -12,6 +12,10 @@ function Ordens() {
     const theme = useTheme();
     const navigate = useNavigate();
 
+    const [paginaAtual, setPaginaAtual] = useState(1);
+    const [totalPaginasBackend, setTotalPaginasBackend] = useState(1);
+    const [loading, setLoading] = useState(false);
+
     const [clientes, setClientes] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
     const [ordens, setOrdens] = useState([]);
@@ -29,9 +33,6 @@ function Ordens() {
     const [editando, setEditando] = useState(false);
     const [ordemEditando, setOrdemEditando] = useState(null);
 
-    const [paginaAtual, setPaginaAtual] = useState(1);
-    const [totalPaginasBackend, setTotalPaginasBackend] = useState(1);
-
     const itensPorPagina = 5;
 
     useEffect(() => {
@@ -43,6 +44,7 @@ function Ordens() {
     }, [busca, filtroStatus]);
 
     const carregarDados = async () => {
+        setLoading(true);
         const usuario = JSON.parse(localStorage.getItem("usuario"));
 
         try {
@@ -95,6 +97,10 @@ function Ordens() {
 
         } catch (error) {
             toast.error("Erro ao carregar dados.");
+        }
+
+        finally {
+            setLoading(false);
         }
     };
 
@@ -715,6 +721,17 @@ function Ordens() {
                 <p>
                     Exibindo {ordensFiltradas.length} de {ordens.length} ordens.
                 </p>
+
+                {loading && (
+                    <p
+                        style={{
+                            fontWeight: "bold",
+                            color: "#1e88e5"
+                        }}
+                    >
+                        Carregando ordens...
+                    </p>
+                )}
 
                 {ordens.length === 0 ? (
                     <p>Nenhuma ordem cadastrada.</p>
