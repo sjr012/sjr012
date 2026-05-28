@@ -487,7 +487,7 @@ function Ordens() {
             body: [
                 ["Número da OS", ordem.id],
 
-                ["Status", ordem.status],
+                ["Status", formatarStatus(ordem.status)],
 
                 [
                     "Cliente",
