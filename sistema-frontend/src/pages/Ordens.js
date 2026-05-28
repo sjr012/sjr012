@@ -18,6 +18,7 @@ function Ordens() {
     const [salvando, setSalvando] = useState(false);
     const [excluindoId, setExcluindoId] = useState(null);
     const [atualizandoStatusId, setAtualizandoStatusId] = useState(null);
+    const [enviandoAnexo, setEnviandoAnexo] = useState(false);
 
     const [clientes, setClientes] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
@@ -302,6 +303,9 @@ function Ordens() {
     };
 
     const enviarAnexo = async () => {
+
+        if (enviandoAnexo) return;
+
         if (!ordemSelecionada) {
             toast.warning("Selecione uma ordem primeiro.");
             return;
@@ -312,28 +316,35 @@ function Ordens() {
             return;
         }
 
-        const formData = new FormData();
-        formData.append("arquivo", arquivoSelecionado);
+        setEnviandoAnexo(true);
 
-        const token = localStorage.getItem("token");
+        try {
+            const formData = new FormData();
+            formData.append("arquivo", arquivoSelecionado);
 
-        const response = await fetch(`${API_URL}/anexos/upload/${ordemSelecionada}`, {
-            method: "POST",
-            headers: {
-                Authorization: token ? `Bearer ${token}` : ""
-            },
-            body: formData
-        });
+            const token = localStorage.getItem("token");
 
-        if (!response.ok) {
-            toast.error("Erro ao enviar anexo.");
-            return;
+            const response = await fetch(`${API_URL}/anexos/upload/${ordemSelecionada}`, {
+                method: "POST",
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : ""
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                toast.error("Erro ao enviar anexo.");
+                return;
+            }
+
+            toast.success("Anexo enviado com sucesso!");
+
+            setArquivoSelecionado(null);
+            carregarAnexos(ordemSelecionada);
+
+        } finally {
+            setEnviandoAnexo(false);
         }
-
-        toast.success("Anexo enviado com sucesso!");
-
-        setArquivoSelecionado(null);
-        carregarAnexos(ordemSelecionada);
     };
 
     const baixarAnexo = async (id, nomeArquivo) => {
@@ -1014,8 +1025,16 @@ function Ordens() {
                         onChange={(e) => setArquivoSelecionado(e.target.files[0])}
                     />
 
-                    <button style={theme.button} onClick={enviarAnexo}>
-                        Enviar Anexo
+                    <button
+                        style={{
+                            ...theme.button,
+                            opacity: enviandoAnexo ? 0.7 : 1,
+                            cursor: enviandoAnexo ? "not-allowed" : "pointer"
+                        }}
+                        disabled={enviandoAnexo}
+                        onClick={enviarAnexo}
+                    >
+                        {enviandoAnexo ? "Enviando..." : "Enviar Anexo"}
                     </button>
 
                     <h3 style={{ marginTop: "20px" }}>
