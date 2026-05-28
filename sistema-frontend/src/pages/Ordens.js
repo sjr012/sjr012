@@ -16,6 +16,7 @@ function Ordens() {
     const [totalPaginasBackend, setTotalPaginasBackend] = useState(1);
     const [loading, setLoading] = useState(false);
     const [salvando, setSalvando] = useState(false);
+    const [excluindoId, setExcluindoId] = useState(null);
 
     const [clientes, setClientes] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
@@ -226,18 +227,27 @@ function Ordens() {
             return;
         }
 
-        const response = await fetch(`${API_URL}/ordens/${id}`, {
-            method: "DELETE",
-            headers: getAuthHeaders()
-        });
+        if (excluindoId === id) return;
 
-        if (!response.ok) {
-            toast.error("Erro ao excluir ordem.");
-            return;
+        setExcluindoId(id);
+
+        try {
+            const response = await fetch(`${API_URL}/ordens/${id}`, {
+                method: "DELETE",
+                headers: getAuthHeaders()
+            });
+
+            if (!response.ok) {
+                toast.error("Erro ao excluir ordem.");
+                return;
+            }
+
+            toast.success("Ordem excluída com sucesso!");
+            carregarDados();
+
+        } finally {
+            setExcluindoId(null);
         }
-
-        toast.success("Ordem excluída com sucesso!");
-        carregarDados();
     };
 
     const fecharOrdem = async (id) => {
@@ -880,11 +890,18 @@ function Ordens() {
                                                         <button
                                                             style={{
                                                                 ...theme.smallButton,
-                                                                background: "#d9534f"
+                                                                background: "#d9534f",
+                                                                opacity: excluindoId === ordem.id ? 0.7 : 1,
+                                                                cursor: excluindoId === ordem.id
+                                                                    ? "not-allowed"
+                                                                    : "pointer"
                                                             }}
+                                                            disabled={excluindoId === ordem.id}
                                                             onClick={() => excluirOrdem(ordem.id)}
                                                         >
-                                                            Excluir
+                                                            {excluindoId === ordem.id
+                                                                ? "Excluindo..."
+                                                                : "Excluir"}
                                                         </button>
                                                     </>
                                                 )}
