@@ -17,6 +17,7 @@ function Ordens() {
     const [loading, setLoading] = useState(false);
     const [salvando, setSalvando] = useState(false);
     const [excluindoId, setExcluindoId] = useState(null);
+    const [atualizandoStatusId, setAtualizandoStatusId] = useState(null);
 
     const [clientes, setClientes] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
@@ -262,27 +263,31 @@ function Ordens() {
 
     const atualizarStatus = async (id, status) => {
 
-        const response = await fetch(
-            `${API_URL}/ordens/${id}/status`,
-            {
-                method: "PUT",
+        if (atualizandoStatusId === id) return;
 
-                headers: getAuthHeaders(),
+        setAtualizandoStatusId(id);
 
-                body: JSON.stringify({
-                    status
-                })
+        try {
+            const response = await fetch(
+                `${API_URL}/ordens/${id}/status`,
+                {
+                    method: "PUT",
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify({ status })
+                }
+            );
+
+            if (!response.ok) {
+                toast.error("Erro ao atualizar status.");
+                return;
             }
-        );
 
-        if (!response.ok) {
-            toast.error("Erro ao atualizar status.");
-            return;
+            toast.success("Status atualizado!");
+            carregarDados();
+
+        } finally {
+            setAtualizandoStatusId(null);
         }
-
-        toast.success("Status atualizado!");
-
-        carregarDados();
     };
 
     const carregarAnexos = async (ordemId) => {
@@ -908,6 +913,7 @@ function Ordens() {
 
                                                 <select
                                                     value={ordem.status}
+                                                    disabled={atualizandoStatusId === ordem.id}
                                                     onChange={(e) =>
                                                         atualizarStatus(ordem.id, e.target.value)
                                                     }
@@ -915,7 +921,11 @@ function Ordens() {
                                                         padding: "8px",
                                                         borderRadius: "8px",
                                                         border: "1px solid #ccc",
-                                                        fontWeight: "bold"
+                                                        fontWeight: "bold",
+                                                        opacity: atualizandoStatusId === ordem.id ? 0.7 : 1,
+                                                        cursor: atualizandoStatusId === ordem.id
+                                                            ? "not-allowed"
+                                                            : "pointer"
                                                     }}
                                                 >
 
