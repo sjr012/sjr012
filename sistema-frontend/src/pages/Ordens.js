@@ -15,6 +15,7 @@ function Ordens() {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const [totalPaginasBackend, setTotalPaginasBackend] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [salvando, setSalvando] = useState(false);
 
     const [clientes, setClientes] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
@@ -32,6 +33,7 @@ function Ordens() {
 
     const [editando, setEditando] = useState(false);
     const [ordemEditando, setOrdemEditando] = useState(null);
+
 
     const itensPorPagina = 5;
 
@@ -143,50 +145,62 @@ function Ordens() {
     };
 
     const salvarOrdem = async () => {
-        if (!descricao || !clienteId || !funcionarioId) {
-            toast.warning("Preencha todos os campos.");
-            return;
+
+        if (salvando) return;
+
+        setSalvando(true);
+
+        try {
+
+            if (!descricao || !clienteId || !funcionarioId) {
+                toast.warning("Preencha todos os campos.");
+                return;
+            }
+
+            const url = editando
+                ? `${API_URL}/ordens/${ordemEditando}`
+                : `${API_URL}/ordens`;
+
+            const metodo = editando ? "PUT" : "POST";
+
+            const response = await fetch(url, {
+                method: metodo,
+                headers: getAuthHeaders(),
+                body: JSON.stringify({
+                    descricao,
+                    cliente: {
+                        id: Number(clienteId)
+                    },
+                    funcionario: {
+                        id: Number(funcionarioId)
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                toast.error("Erro ao salvar ordem.");
+                return;
+            }
+
+            toast.success(
+                editando
+                    ? "Ordem atualizada com sucesso!"
+                    : "Ordem cadastrada com sucesso!"
+            );
+
+            setDescricao("");
+            setClienteId("");
+            setFuncionarioId("");
+
+            setEditando(false);
+            setOrdemEditando(null);
+
+            carregarDados();
+
+        } finally {
+
+            setSalvando(false);
         }
-
-        const url = editando
-            ? `${API_URL}/ordens/${ordemEditando}`
-            : `${API_URL}/ordens`;
-
-        const metodo = editando ? "PUT" : "POST";
-
-        const response = await fetch(url, {
-            method: metodo,
-            headers: getAuthHeaders(),
-            body: JSON.stringify({
-                descricao,
-                cliente: {
-                    id: Number(clienteId)
-                },
-                funcionario: {
-                    id: Number(funcionarioId)
-                }
-            })
-        });
-
-        if (!response.ok) {
-            toast.error("Erro ao salvar ordem.");
-            return;
-        }
-
-        toast.success(
-            editando
-                ? "Ordem atualizada com sucesso!"
-                : "Ordem cadastrada com sucesso!"
-        );
-
-        setDescricao("");
-        setClienteId("");
-        setFuncionarioId("");
-
-        setEditando(false);
-        setOrdemEditando(null);
-
-        carregarDados();
     };
 
     const editarOrdem = (ordem) => {
@@ -659,8 +673,20 @@ function Ordens() {
                         ))}
                     </select>
 
-                    <button style={theme.button} onClick={salvarOrdem}>
-                        {editando ? "Salvar Alterações" : "Abrir Ordem"}
+                    <button
+                        style={{
+                            ...theme.button,
+                            opacity: salvando ? 0.7 : 1,
+                            cursor: salvando ? "not-allowed" : "pointer"
+                        }}
+                        disabled={salvando}
+                        onClick={salvarOrdem}
+                    >
+                        {salvando
+                            ? "Salvando..."
+                            : editando
+                                ? "Salvar Alterações"
+                                : "Abrir Ordem"}
                     </button>
 
                     {editando && (
