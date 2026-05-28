@@ -28,6 +28,7 @@ function Ordens() {
     const [arquivoSelecionado, setArquivoSelecionado] = useState(null);
     const [anexos, setAnexos] = useState([]);
     const [ordemSelecionada, setOrdemSelecionada] = useState(null);
+    const [modalAnexosAberto, setModalAnexosAberto] = useState(false);
 
     const [descricao, setDescricao] = useState("");
     const [clienteId, setClienteId] = useState("");
@@ -312,6 +313,7 @@ function Ordens() {
 
         setAnexos(data);
         setOrdemSelecionada(ordemId);
+        setModalAnexosAberto(true);
     };
 
     const enviarAnexo = async () => {
@@ -1027,7 +1029,7 @@ function Ordens() {
                 )}
             </section>
 
-            {ordemSelecionada && (
+            {modalAnexosAberto && (
                 <section style={theme.panel}>
                     <h2>Anexos da Ordem #{ordemSelecionada}</h2>
 
