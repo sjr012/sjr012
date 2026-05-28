@@ -32,7 +32,7 @@ function Ordens() {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const [totalPaginasBackend, setTotalPaginasBackend] = useState(1);
 
-    const itensPorPagina = 10;
+    const itensPorPagina = 5;
 
     useEffect(() => {
         carregarDados();
