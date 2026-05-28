@@ -6,6 +6,7 @@ import API_URL, { getAuthHeaders } from "../services/api";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import QRCode from "qrcode";
+import Swal from "sweetalert2";
 
 function Ordens() {
 
