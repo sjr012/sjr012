@@ -19,6 +19,7 @@ import API_URL, {
 function Dashboard() {
 
     const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [darkMode, setDarkMode] = useState(
         localStorage.getItem("tema") === "dark"
@@ -45,6 +46,9 @@ function Dashboard() {
     }, []);
 
     const carregarDados = async () => {
+
+        setLoading(true);
+
         try {
             setLoading(true);
 
@@ -218,6 +222,18 @@ function Dashboard() {
             <h1 style={{ color: darkMode ? "#fff" : "#000" }}>
                 Dashboard
             </h1>
+
+            {loading && (
+                <p
+                    style={{
+                        fontWeight: "bold",
+                        color: "#1e88e5",
+                        marginBottom: "20px"
+                    }}
+                >
+                    Carregando dados do dashboard...
+                </p>
+            )}
 
             <p style={{ color: darkMode ? "#d1d5db" : "#444" }}>
                 Sistema de ordens de serviço, podendo se tornar um sistema de gestão completo para pequenas empresas, com módulos de estoque, financeiro e relatórios personalizados.
