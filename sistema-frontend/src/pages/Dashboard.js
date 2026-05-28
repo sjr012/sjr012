@@ -18,7 +18,6 @@ import API_URL, {
 
 function Dashboard() {
 
-    const [loading, setLoading] = useState(true);
     const [loading, setLoading] = useState(false);
 
     const [darkMode, setDarkMode] = useState(
