@@ -148,6 +148,36 @@ function OrdemDetalhe() {
         });
     };
 
+    const formatarStatus = (status) => {
+
+        switch (status) {
+
+            case "ABERTA":
+                return "Aberta";
+
+            case "EM_ANDAMENTO":
+                return "Em andamento";
+
+            case "AGUARDANDO_PECA":
+                return "Aguardando peça";
+
+            case "FINALIZADA":
+                return "Finalizada";
+
+            case "ENTREGUE":
+                return "Entregue";
+
+            case "CANCELADA":
+                return "Cancelada";
+
+            case "FECHADA":
+                return "Fechada";
+
+            default:
+                return status;
+        }
+    };
+
     const gerarPdfOrdem = async (ordem) => {
 
 
@@ -235,7 +265,7 @@ function OrdemDetalhe() {
             body: [
                 ["Número da OS", ordem.id],
 
-                ["Status", ordem.status],
+                ["Status", formatarStatus(ordem.status)],
 
                 [
                     "Cliente",
