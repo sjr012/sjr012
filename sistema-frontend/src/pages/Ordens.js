@@ -1030,66 +1030,95 @@ function Ordens() {
             </section>
 
             {modalAnexosAberto && (
-                <section style={theme.panel}>
-                    <h2>Anexos da Ordem #{ordemSelecionada}</h2>
+                <section
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        background: "rgba(0,0,0,0.6)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 9999,
+                        padding: "20px"
+                    }}
+                >
 
-                    <input
-                        style={theme.input}
-                        type="file"
-                        onChange={(e) => setArquivoSelecionado(e.target.files[0])}
-                    />
-
-                    <button
+                    <div
                         style={{
-                            ...theme.button,
-                            opacity: enviandoAnexo ? 0.7 : 1,
-                            cursor: enviandoAnexo ? "not-allowed" : "pointer"
+                            background: theme.panel.background || "#fff",
+                            padding: "25px",
+                            borderRadius: "16px",
+                            width: "100%",
+                            maxWidth: "900px",
+                            maxHeight: "90vh",
+                            overflowY: "auto",
+                            boxShadow: "0 10px 30px rgba(0,0,0,0.35)"
                         }}
-                        disabled={enviandoAnexo}
-                        onClick={enviarAnexo}
                     >
-                        {enviandoAnexo ? "Enviando..." : "Enviar Anexo"}
-                    </button>
 
-                    <h3 style={{ marginTop: "20px" }}>
-                        Arquivos anexados
-                    </h3>
+                        <h2>Anexos da Ordem #{ordemSelecionada}</h2>
 
-                    {anexos.length === 0 ? (
-                        <p>Nenhum anexo encontrado.</p>
-                    ) : (
-                        <table style={theme.table}>
-                            <thead>
-                                <tr>
-                                    <th style={theme.th}>ID</th>
-                                    <th style={theme.th}>Arquivo</th>
-                                    <th style={theme.th}>Tipo</th>
-                                    <th style={theme.th}>Ação</th>
-                                </tr>
-                            </thead>
+                        <input
+                            style={theme.input}
+                            type="file"
+                            onChange={(e) => setArquivoSelecionado(e.target.files[0])}
+                        />
 
-                            <tbody>
-                                {anexos.map((anexo) => (
-                                    <tr key={anexo.id}>
-                                        <td style={theme.td}>{anexo.id}</td>
-                                        <td style={theme.td}>{anexo.nomeArquivo}</td>
-                                        <td style={theme.td}>{anexo.tipoArquivo}</td>
+                        <button
+                            style={{
+                                ...theme.button,
+                                opacity: enviandoAnexo ? 0.7 : 1,
+                                cursor: enviandoAnexo ? "not-allowed" : "pointer"
+                            }}
+                            disabled={enviandoAnexo}
+                            onClick={enviarAnexo}
+                        >
+                            {enviandoAnexo ? "Enviando..." : "Enviar Anexo"}
+                        </button>
 
-                                        <td style={theme.td}>
-                                            <button
-                                                style={theme.smallButton}
-                                                onClick={() =>
-                                                    baixarAnexo(anexo.id, anexo.nomeArquivo)
-                                                }
-                                            >
-                                                Baixar
-                                            </button>
-                                        </td>
+                        <h3 style={{ marginTop: "20px" }}>
+                            Arquivos anexados
+                        </h3>
+
+                        {anexos.length === 0 ? (
+                            <p>Nenhum anexo encontrado.</p>
+                        ) : (
+                            <table style={theme.table}>
+                                <thead>
+                                    <tr>
+                                        <th style={theme.th}>ID</th>
+                                        <th style={theme.th}>Arquivo</th>
+                                        <th style={theme.th}>Tipo</th>
+                                        <th style={theme.th}>Ação</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
+                                </thead>
+
+                                <tbody>
+                                    {anexos.map((anexo) => (
+                                        <tr key={anexo.id}>
+                                            <td style={theme.td}>{anexo.id}</td>
+                                            <td style={theme.td}>{anexo.nomeArquivo}</td>
+                                            <td style={theme.td}>{anexo.tipoArquivo}</td>
+
+                                            <td style={theme.td}>
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() =>
+                                                        baixarAnexo(anexo.id, anexo.nomeArquivo)
+                                                    }
+                                                >
+                                                    Baixar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
                 </section>
             )}
         </div>
