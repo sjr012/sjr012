@@ -225,7 +225,18 @@ function Ordens() {
     };
 
     const excluirOrdem = async (id) => {
-        if (!window.confirm("Deseja realmente excluir esta ordem?")) {
+        const confirmacao = await Swal.fire({
+            title: "Excluir ordem?",
+            text: "Essa ação não poderá ser desfeita.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, excluir",
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#d9534f",
+            cancelButtonColor: "#6c757d"
+        });
+
+        if (!confirmacao.isConfirmed) {
             return;
         }
 
