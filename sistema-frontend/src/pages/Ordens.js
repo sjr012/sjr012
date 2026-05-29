@@ -1083,6 +1083,24 @@ function Ordens() {
                     >
 
                         <h2>Anexos da Ordem #{ordemSelecionada}</h2>
+                        
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                marginBottom: "15px"
+                            }}
+                        >
+                            <button
+                                style={{
+                                    ...theme.smallButton,
+                                    background: "#6c757d"
+                                }}
+                                onClick={() => setModalAnexosAberto(false)}
+                            >
+                                Fechar
+                            </button>
+                        </div>
 
                         <input
                             style={theme.input}
