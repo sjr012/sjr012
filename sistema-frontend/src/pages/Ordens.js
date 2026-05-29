@@ -1145,21 +1145,29 @@ function Ordens() {
                                             <td style={theme.td}>{anexo.tipoArquivo}</td>
 
                                             <td style={theme.td}>
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        gap: "8px",
+                                                        flexWrap: "wrap"
+                                                    }}
+                                                >
+                                                    <button
+                                                        style={theme.smallButton}
+                                                        onClick={() => visualizarAnexo(anexo.id)}
+                                                    >
+                                                        Visualizar
+                                                    </button>
 
-                                                <button
-                                                    style={theme.smallButton}
-                                                    onClick={() => visualizarAnexo(anexo.id)}
-                                                >
-                                                    Visualizar
-                                                </button>
-                                                <button
-                                                    style={theme.smallButton}
-                                                    onClick={() =>
-                                                        baixarAnexo(anexo.id, anexo.nomeArquivo)
-                                                    }
-                                                >
-                                                    Baixar
-                                                </button>
+                                                    <button
+                                                        style={theme.smallButton}
+                                                        onClick={() =>
+                                                            baixarAnexo(anexo.id, anexo.nomeArquivo)
+                                                        }
+                                                    >
+                                                        Baixar
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
