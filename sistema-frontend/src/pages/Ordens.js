@@ -1166,23 +1166,37 @@ function Ordens() {
                                     <div
                                         key={anexo.id}
                                         style={{
-                                            background: "#fff",
-                                            border: "1px solid #e5e7eb",
+                                            background:
+                                                localStorage.getItem("tema") === "dark"
+                                                    ? "#1f2937"
+                                                    : "#fff",
+
+                                            border:
+                                                localStorage.getItem("tema") === "dark"
+                                                    ? "1px solid #374151"
+                                                    : "1px solid #e5e7eb",
+
                                             borderRadius: "14px",
                                             padding: "15px",
-                                            boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+
+                                            boxShadow:
+                                                localStorage.getItem("tema") === "dark"
+                                                    ? "0 4px 12px rgba(0,0,0,0.35)"
+                                                    : "0 4px 12px rgba(0,0,0,0.08)"
                                         }}
                                     >
                                         {isImagem(anexo.tipoArquivo) ? (
                                             <img
                                                 src={anexo.caminhoArquivo}
                                                 alt={anexo.nomeArquivo}
+                                                onClick={() => visualizarAnexo(anexo.id)}
                                                 style={{
                                                     width: "100%",
                                                     height: "150px",
                                                     objectFit: "cover",
                                                     borderRadius: "10px",
-                                                    marginBottom: "12px"
+                                                    marginBottom: "12px",
+                                                    cursor: "pointer"
                                                 }}
                                             />
                                         ) : (
@@ -1190,6 +1204,7 @@ function Ordens() {
                                                 style={{
                                                     height: "150px",
                                                     display: "flex",
+                                                    flexDirection: "column",
                                                     alignItems: "center",
                                                     justifyContent: "center",
                                                     fontSize: "52px",
@@ -1199,6 +1214,20 @@ function Ordens() {
                                                 }}
                                             >
                                                 {obterIconeAnexo(anexo.tipoArquivo)}
+
+                                                <span
+                                                    style={{
+                                                        fontSize: "12px",
+                                                        marginTop: "8px",
+                                                        fontWeight: "bold"
+                                                    }}
+                                                >
+                                                    {anexo.tipoArquivo === "application/pdf"
+                                                        ? "PDF"
+                                                        : anexo.tipoArquivo?.includes("zip")
+                                                            ? "ZIP"
+                                                            : "Arquivo"}
+                                                </span>
                                             </div>
                                         )}
 
