@@ -1098,14 +1098,12 @@ function Ordens() {
                     <div
                         onClick={(e) => e.stopPropagation()}
                         style={{
-                            background: theme.panel.background || "#fff",
-                            padding: "25px",
-                            borderRadius: "16px",
-                            width: "100%",
-                            maxWidth: "900px",
-                            maxHeight: "90vh",
-                            overflowY: "auto",
-                            boxShadow: "0 10px 30px rgba(0,0,0,0.35)"
+                            background: "#162338",
+                            border: "1px solid #2c3e5c",
+                            borderRadius: "14px",
+                            padding: "15px",
+                            color: "#fff",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.35)"
                         }}
                     >
 
@@ -1114,10 +1112,13 @@ function Ordens() {
                                 display: "flex",
                                 justifyContent: "space-between",
                                 alignItems: "center",
-                                marginBottom: "20px"
+                                marginBottom: "20px",
+                                gap: "12px"
                             }}
                         >
-                            <h2>Anexos da Ordem #{ordemSelecionada}</h2>
+                            <h2 style={{ margin: 0 }}>
+                                Anexos da Ordem #{ordemSelecionada}
+                            </h2>
 
                             <button
                                 style={{
@@ -1235,7 +1236,9 @@ function Ordens() {
                                         <h4
                                             style={{
                                                 margin: "0 0 6px",
-                                                wordBreak: "break-word"
+                                                wordBreak: "break-word",
+                                                color: "#fff",
+                                                fontWeight: "600"
                                             }}
                                         >
                                             {anexo.nomeArquivo}
@@ -1244,7 +1247,8 @@ function Ordens() {
                                         <p
                                             style={{
                                                 fontSize: "13px",
-                                                opacity: 0.75,
+                                                color: "#9fb3d1",
+                                                opacity: 1,
                                                 marginBottom: "12px"
                                             }}
                                         >
