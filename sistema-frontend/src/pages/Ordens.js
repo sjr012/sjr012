@@ -1159,7 +1159,7 @@ function Ordens() {
                             <div
                                 style={{
                                     display: "grid",
-                                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
                                     gap: "18px",
                                     marginTop: "20px"
                                 }}
