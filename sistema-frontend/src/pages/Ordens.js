@@ -816,8 +816,7 @@ function Ordens() {
                     <select
                         style={{
                             ...theme.input,
-                            maxWidth: "1400px",
-                            width: "95%"
+                            maxWidth: "220px"
                         }}
                         value={filtroStatus}
                         onChange={(e) => setFiltroStatus(e.target.value)}
@@ -1102,9 +1101,17 @@ function Ordens() {
                             background: "#162338",
                             border: "1px solid #2c3e5c",
                             borderRadius: "14px",
-                            padding: "15px",
+
+                            width: "95%",
+                            maxWidth: "1400px",
+
+                            height: "90vh",
+                            overflowY: "auto",
+
+                            padding: "25px",
                             color: "#fff",
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.35)"
+
+                            boxShadow: "0 10px 30px rgba(0,0,0,0.35)"
                         }}
                     >
 
@@ -1160,7 +1167,7 @@ function Ordens() {
                             <div
                                 style={{
                                     display: "grid",
-                                    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
                                     gap: "18px",
                                     marginTop: "20px"
                                 }}
