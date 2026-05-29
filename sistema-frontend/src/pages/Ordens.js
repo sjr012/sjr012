@@ -1146,25 +1146,20 @@ function Ordens() {
 
                                             <td style={theme.td}>
 
-                                                <div>
-                                                    <button
-                                                        style={theme.smallButton}
-                                                        onClick={() => visualizarAnexo(anexo.id)}
-                                                    >
-                                                        Visualizar
-                                                    </button>
-                                                </div>
-
-                                                <div>
-                                                    <button
-                                                        style={theme.smallButton}
-                                                        onClick={() =>
-                                                            baixarAnexo(anexo.id, anexo.nomeArquivo)
-                                                        }
-                                                    >
-                                                        Baixar
-                                                    </button>
-                                                </div>
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() => visualizarAnexo(anexo.id)}
+                                                >
+                                                    Visualizar
+                                                </button>
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() =>
+                                                        baixarAnexo(anexo.id, anexo.nomeArquivo)
+                                                    }
+                                                >
+                                                    Baixar
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
