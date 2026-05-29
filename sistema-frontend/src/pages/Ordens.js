@@ -422,6 +422,31 @@ function Ordens() {
         }
     };
 
+    const obterIconeAnexo = (tipoArquivo) => {
+        if (!tipoArquivo) return "📎";
+
+        if (tipoArquivo.startsWith("image/")) {
+            return "🖼️";
+        }
+
+        if (tipoArquivo === "application/pdf") {
+            return "📄";
+        }
+
+        if (
+            tipoArquivo === "application/zip" ||
+            tipoArquivo === "application/x-zip-compressed"
+        ) {
+            return "🗜️";
+        }
+
+        return "📎";
+    };
+
+    const isImagem = (tipoArquivo) => {
+        return tipoArquivo?.startsWith("image/");
+    };
+
     const formatarDataHora = (valor) => {
 
         if (!valor) return "-";
@@ -1129,52 +1154,102 @@ function Ordens() {
                         {anexos.length === 0 ? (
                             <p>Nenhum anexo encontrado.</p>
                         ) : (
-                            <table style={theme.table}>
-                                <thead>
-                                    <tr>
-                                        <th style={theme.th}>ID</th>
-                                        <th style={theme.th}>Arquivo</th>
-                                        <th style={theme.th}>Tipo</th>
-                                        <th style={theme.th}>Ação</th>
-                                    </tr>
-                                </thead>
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                                    gap: "18px",
+                                    marginTop: "20px"
+                                }}
+                            >
+                                {anexos.map((anexo) => (
+                                    <div
+                                        key={anexo.id}
+                                        style={{
+                                            background: "#fff",
+                                            border: "1px solid #e5e7eb",
+                                            borderRadius: "14px",
+                                            padding: "15px",
+                                            boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+                                        }}
+                                    >
+                                        {isImagem(anexo.tipoArquivo) ? (
+                                            <img
+                                                src={anexo.caminhoArquivo}
+                                                alt={anexo.nomeArquivo}
+                                                style={{
+                                                    width: "100%",
+                                                    height: "150px",
+                                                    objectFit: "cover",
+                                                    borderRadius: "10px",
+                                                    marginBottom: "12px"
+                                                }}
+                                            />
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    height: "150px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    fontSize: "52px",
+                                                    background: "#f3f4f6",
+                                                    borderRadius: "10px",
+                                                    marginBottom: "12px"
+                                                }}
+                                            >
+                                                {obterIconeAnexo(anexo.tipoArquivo)}
+                                            </div>
+                                        )}
 
-                                <tbody>
-                                    {anexos.map((anexo) => (
-                                        <tr key={anexo.id}>
-                                            <td style={theme.td}>{anexo.id}</td>
-                                            <td style={theme.td}>{anexo.nomeArquivo}</td>
-                                            <td style={theme.td}>{anexo.tipoArquivo}</td>
+                                        <h4
+                                            style={{
+                                                margin: "0 0 6px",
+                                                wordBreak: "break-word"
+                                            }}
+                                        >
+                                            {anexo.nomeArquivo}
+                                        </h4>
 
-                                            <td style={theme.td}>
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        gap: "8px",
-                                                        flexWrap: "wrap"
-                                                    }}
-                                                >
-                                                    <button
-                                                        style={theme.smallButton}
-                                                        onClick={() => visualizarAnexo(anexo.id)}
-                                                    >
-                                                        Visualizar
-                                                    </button>
+                                        <p
+                                            style={{
+                                                fontSize: "13px",
+                                                opacity: 0.75,
+                                                marginBottom: "12px"
+                                            }}
+                                        >
+                                            {anexo.tipoArquivo}
+                                        </p>
 
-                                                    <button
-                                                        style={theme.smallButton}
-                                                        onClick={() =>
-                                                            baixarAnexo(anexo.id, anexo.nomeArquivo)
-                                                        }
-                                                    >
-                                                        Baixar
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                gap: "8px",
+                                                flexWrap: "wrap"
+                                            }}
+                                        >
+                                            <button
+                                                style={theme.smallButton}
+                                                onClick={() => visualizarAnexo(anexo.id)}
+                                            >
+                                                Visualizar
+                                            </button>
+
+                                            <button
+                                                style={{
+                                                    ...theme.smallButton,
+                                                    background: "#198754"
+                                                }}
+                                                onClick={() =>
+                                                    baixarAnexo(anexo.id, anexo.nomeArquivo)
+                                                }
+                                            >
+                                                Baixar
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         )}
                     </div>
                 </section>
