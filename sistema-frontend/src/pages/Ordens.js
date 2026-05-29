@@ -401,17 +401,19 @@ function Ordens() {
 
     const visualizarAnexo = async (id) => {
         try {
-            const response = await fetch(`${API_URL}/anexos/download/${id}`, {
-                headers: getAuthHeaders()
-            });
+            const response = await fetch(
+                `${API_URL}/anexos/download/${id}`,
+                {
+                    headers: getAuthHeaders()
+                }
+            );
 
             if (!response.ok) {
                 toast.error("Erro ao visualizar anexo.");
                 return;
             }
 
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
+            const url = await response.text();
 
             window.open(url, "_blank");
 
