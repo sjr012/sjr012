@@ -399,6 +399,27 @@ function Ordens() {
         }
     };
 
+    const visualizarAnexo = async (id) => {
+        try {
+            const response = await fetch(`${API_URL}/anexos/download/${id}`, {
+                headers: getAuthHeaders()
+            });
+
+            if (!response.ok) {
+                toast.error("Erro ao visualizar anexo.");
+                return;
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            window.open(url, "_blank");
+
+        } catch (error) {
+            toast.error("Erro ao visualizar anexo.");
+        }
+    };
+
     const formatarDataHora = (valor) => {
 
         if (!valor) return "-";
@@ -1031,6 +1052,7 @@ function Ordens() {
 
             {modalAnexosAberto && (
                 <section
+                    onClick={() => setModalAnexosAberto(false)}
                     style={{
                         position: "fixed",
                         top: 0,
@@ -1047,6 +1069,7 @@ function Ordens() {
                 >
 
                     <div
+                        onClick={(e) => e.stopPropagation()}
                         style={{
                             background: theme.panel.background || "#fff",
                             padding: "25px",
@@ -1104,6 +1127,12 @@ function Ordens() {
                                             <td style={theme.td}>{anexo.tipoArquivo}</td>
 
                                             <td style={theme.td}>
+                                                <button
+                                                    style={theme.smallButton}
+                                                    onClick={() => visualizarAnexo(anexo.id)}
+                                                >
+                                                    Visualizar
+                                                </button>
                                                 <button
                                                     style={theme.smallButton}
                                                     onClick={() =>
