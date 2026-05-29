@@ -1109,15 +1109,16 @@ function Ordens() {
                         }}
                     >
 
-                        <h2>Anexos da Ordem #{ordemSelecionada}</h2>
-
                         <div
                             style={{
                                 display: "flex",
-                                justifyContent: "flex-end",
-                                marginBottom: "15px"
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: "20px"
                             }}
                         >
+                            <h2>Anexos da Ordem #{ordemSelecionada}</h2>
+
                             <button
                                 style={{
                                     ...theme.smallButton,
