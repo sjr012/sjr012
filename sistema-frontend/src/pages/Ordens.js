@@ -816,7 +816,8 @@ function Ordens() {
                     <select
                         style={{
                             ...theme.input,
-                            maxWidth: "220px"
+                            maxWidth: "1400px",
+                            width: "95%"
                         }}
                         value={filtroStatus}
                         onChange={(e) => setFiltroStatus(e.target.value)}
