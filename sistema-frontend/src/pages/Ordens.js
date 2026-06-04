@@ -1105,7 +1105,7 @@ function Ordens() {
                             width: "95%",
                             maxWidth: "800px",
 
-                            height: "90vh",
+                            height: "75vh",
                             overflowY: "auto",
 
                             padding: "25px",
