@@ -266,7 +266,7 @@ function Dashboard() {
                         borderLeft: "5px solid #0d6efd"
                     }}
                 >
-                    <h3>🔵 Abertas</h3>
+                    <h3 style={{ marginBottom: "18px" }}>🔵 Abertas</h3>
                     <strong style={styles.cardNumber}>{totalAbertas}</strong>
                 </div>
 
@@ -276,7 +276,7 @@ function Dashboard() {
                         borderLeft: "5px solid #fd7e14"
                     }}
                 >
-                    <h3>🟠 Em andamento</h3>
+                    <h3 style={{ marginBottom: "18px" }}>🟠 Em andamento</h3>
                     <strong style={styles.cardNumber}>{totalEmAndamento}</strong>
                 </div>
 
@@ -286,7 +286,7 @@ function Dashboard() {
                         borderLeft: "5px solid #6c757d"
                     }}
                 >
-                    <h3>⚫ Fechadas</h3>
+                    <h3 style={{ marginBottom: "18px" }}>⚫ Fechadas</h3>
                     <strong style={styles.cardNumber}>{totalFechadas}</strong>
                 </div>
 
@@ -296,7 +296,7 @@ function Dashboard() {
                         borderLeft: "5px solid #6f42c1"
                     }}
                 >
-                    <h3>🟣 Aguardando peça</h3>
+                    <h3 style={{ marginBottom: "18px" }}>🟣 Aguardando peça</h3>
                     <strong style={styles.cardNumber}>{totalAguardandoPeca}</strong>
                 </div>
 
@@ -306,7 +306,7 @@ function Dashboard() {
                         borderLeft: "5px solid #198754"
                     }}
                 >
-                    <h3>🟢 Finalizadas</h3>
+                    <h3 style={{ marginBottom: "18px" }}>🟢 Finalizadas</h3>
                     <strong style={styles.cardNumber}>{totalFinalizadas}</strong>
                 </div>
 
@@ -316,7 +316,7 @@ function Dashboard() {
                         borderLeft: "5px solid #20c997"
                     }}
                 >
-                    <h3>🟦 Entregues</h3>
+                    <h3 style={{ marginBottom: "18px" }}>🟦 Entregues</h3>
                     <strong style={styles.cardNumber}>{totalEntregues}</strong>
                 </div>
 
@@ -326,7 +326,7 @@ function Dashboard() {
                         borderLeft: "5px solid #dc3545"
                     }}
                 >
-                    <h3>🔴 Canceladas</h3>
+                    <h3 style={{ marginBottom: "18px" }}>🔴 Canceladas</h3>
                     <strong style={styles.cardNumber}>{totalCanceladas}</strong>
                 </div>
 
@@ -474,9 +474,9 @@ const styles = {
 
     cardNumber: {
         display: "block",
-        fontSize: "34px",
+        fontSize: "36px",
         fontWeight: "bold",
-        marginTop: "12px"
+        marginTop: "8px"
     },
 
     cardDark: {
