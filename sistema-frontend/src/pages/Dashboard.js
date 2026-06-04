@@ -267,7 +267,7 @@ function Dashboard() {
                     }}
                 >
                     <h3>🔵 Abertas</h3>
-                    <strong>{totalAbertas}</strong>
+                    <strong style={styles.cardNumber}>{totalAbertas}</strong>
                 </div>
 
                 <div
@@ -277,47 +277,7 @@ function Dashboard() {
                     }}
                 >
                     <h3>🟠 Em andamento</h3>
-                    <strong>{totalEmAndamento}</strong>
-                </div>
-
-                <div
-                    style={{
-                        ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #6f42c1"
-                    }}
-                >
-                    <h3>🟣 Aguardando peça</h3>
-                    <strong>{totalAguardandoPeca}</strong>
-                </div>
-
-                <div
-                    style={{
-                        ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #198754"
-                    }}
-                >
-                    <h3>🟢 Finalizadas</h3>
-                    <strong>{totalFinalizadas}</strong>
-                </div>
-
-                <div
-                    style={{
-                        ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #20c997"
-                    }}
-                >
-                    <h3>🟦 Entregues</h3>
-                    <strong>{totalEntregues}</strong>
-                </div>
-
-                <div
-                    style={{
-                        ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #dc3545"
-                    }}
-                >
-                    <h3>🔴 Canceladas</h3>
-                    <strong>{totalCanceladas}</strong>
+                    <strong style={styles.cardNumber}>{totalEmAndamento}</strong>
                 </div>
 
                 <div
@@ -327,8 +287,49 @@ function Dashboard() {
                     }}
                 >
                     <h3>⚫ Fechadas</h3>
-                    <strong>{totalFechadas}</strong>
+                    <strong style={styles.cardNumber}>{totalFechadas}</strong>
                 </div>
+
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #6f42c1"
+                    }}
+                >
+                    <h3>🟣 Aguardando peça</h3>
+                    <strong style={styles.cardNumber}>{totalAguardandoPeca}</strong>
+                </div>
+
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #198754"
+                    }}
+                >
+                    <h3>🟢 Finalizadas</h3>
+                    <strong style={styles.cardNumber}>{totalFinalizadas}</strong>
+                </div>
+
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #20c997"
+                    }}
+                >
+                    <h3>🟦 Entregues</h3>
+                    <strong style={styles.cardNumber}>{totalEntregues}</strong>
+                </div>
+
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #dc3545"
+                    }}
+                >
+                    <h3>🔴 Canceladas</h3>
+                    <strong style={styles.cardNumber}>{totalCanceladas}</strong>
+                </div>
+
             </section>
 
             <section style={styles.chartsGrid}>
