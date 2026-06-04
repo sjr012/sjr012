@@ -472,6 +472,13 @@ const styles = {
         boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
     },
 
+    cardNumber: {
+        display: "block",
+        fontSize: "34px",
+        fontWeight: "bold",
+        marginTop: "12px"
+    },
+
     cardDark: {
         background: "#1f2937",
         color: "#f9fafb",
