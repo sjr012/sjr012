@@ -260,37 +260,72 @@ function Dashboard() {
             </section>
 
             <section style={styles.cards}>
-                <div style={darkMode ? styles.cardDark : styles.card}>
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #0d6efd"
+                    }}
+                >
                     <h3>🔵 Abertas</h3>
                     <strong>{totalAbertas}</strong>
                 </div>
 
-                <div style={darkMode ? styles.cardDark : styles.card}>
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #fd7e14"
+                    }}
+                >
                     <h3>🟠 Em andamento</h3>
                     <strong>{totalEmAndamento}</strong>
                 </div>
 
-                <div style={darkMode ? styles.cardDark : styles.card}>
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #6f42c1"
+                    }}
+                >
                     <h3>🟣 Aguardando peça</h3>
                     <strong>{totalAguardandoPeca}</strong>
                 </div>
 
-                <div style={darkMode ? styles.cardDark : styles.card}>
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #198754"
+                    }}
+                >
                     <h3>🟢 Finalizadas</h3>
                     <strong>{totalFinalizadas}</strong>
                 </div>
 
-                <div style={darkMode ? styles.cardDark : styles.card}>
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #20c997"
+                    }}
+                >
                     <h3>🟦 Entregues</h3>
                     <strong>{totalEntregues}</strong>
                 </div>
 
-                <div style={darkMode ? styles.cardDark : styles.card}>
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #dc3545"
+                    }}
+                >
                     <h3>🔴 Canceladas</h3>
                     <strong>{totalCanceladas}</strong>
                 </div>
 
-                <div style={darkMode ? styles.cardDark : styles.card}>
+                <div
+                    style={{
+                        ...(darkMode ? styles.cardDark : styles.card),
+                        borderLeft: "5px solid #6c757d"
+                    }}
+                >
                     <h3>⚫ Fechadas</h3>
                     <strong>{totalFechadas}</strong>
                 </div>
