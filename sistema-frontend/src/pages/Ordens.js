@@ -1103,7 +1103,7 @@ function Ordens() {
                             borderRadius: "14px",
 
                             width: "95%",
-                            maxWidth: "1000px",
+                            maxWidth: "800px",
 
                             height: "90vh",
                             overflowY: "auto",
