@@ -66,6 +66,7 @@ function Dashboard() {
                 if (ordensRes.ok) {
                     const data = await ordensRes.json();
                     setOrdens(data.content || []);
+                    console.log(ordens);
                 }
 
                 if (clientesRes.ok) {
