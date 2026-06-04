@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useTheme from "../hooks/useTheme";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ function Ordens() {
 
     const theme = useTheme();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const [paginaAtual, setPaginaAtual] = useState(1);
     const [totalPaginasBackend, setTotalPaginasBackend] = useState(1);
@@ -41,6 +42,14 @@ function Ordens() {
 
 
     const itensPorPagina = 5;
+
+    useEffect(() => {
+        const status = searchParams.get("status");
+
+        if (status) {
+            setFiltroStatus(status);
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         carregarDados();

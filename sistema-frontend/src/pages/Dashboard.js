@@ -16,7 +16,11 @@ import API_URL, {
     apiFetch
 } from "../services/api";
 
+import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
+
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
@@ -261,69 +265,84 @@ function Dashboard() {
 
             <section style={styles.cards}>
                 <div
+                    onClick={() => navigate("/ordens?status=ABERTA")}
                     style={{
                         ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #0d6efd"
+                        borderLeft: "5px solid #0d6efd",
+                        cursor: "pointer",
+                        transition: "0.2s"
                     }}
                 >
                     <h3 style={{ marginBottom: "18px" }}>🔵 Abertas</h3>
                     <strong style={styles.cardNumber}>{totalAbertas}</strong>
                 </div>
 
-                <div
+                <div onClick={() => navigate("/ordens?status=EM_ANDAMENTO")}
                     style={{
                         ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #fd7e14"
+                        borderLeft: "5px solid #fd7e14",
+                        cursor: "pointer",
+                        transition: "0.2s"
                     }}
                 >
                     <h3 style={{ marginBottom: "18px" }}>🟠 Em andamento</h3>
                     <strong style={styles.cardNumber}>{totalEmAndamento}</strong>
                 </div>
 
-                <div
+                <div onClick={() => navigate("/ordens?status=FECHADA")}
                     style={{
                         ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #6c757d"
+                        borderLeft: "5px solid #6c757d",
+                        cursor: "pointer",
+                        transition: "0.2s"
                     }}
                 >
                     <h3 style={{ marginBottom: "18px" }}>⚫ Fechadas</h3>
                     <strong style={styles.cardNumber}>{totalFechadas}</strong>
                 </div>
 
-                <div
+                <div onClick={() => navigate("/ordens?status=AGUARDANDO_PECA")}
                     style={{
                         ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #6f42c1"
+                        borderLeft: "5px solid #6f42c1",
+                        cursor: "pointer",
+                        transition: "0.2s"
                     }}
                 >
                     <h3 style={{ marginBottom: "18px" }}>🟣 Aguardando peça</h3>
                     <strong style={styles.cardNumber}>{totalAguardandoPeca}</strong>
                 </div>
 
-                <div
+                <div onClick={() => navigate("/ordens?status=FINALIZADA")}
                     style={{
                         ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #198754"
+                        borderLeft: "5px solid #198754",
+                        cursor: "pointer",
+                        transition: "0.2s"
                     }}
                 >
                     <h3 style={{ marginBottom: "18px" }}>🟢 Finalizadas</h3>
                     <strong style={styles.cardNumber}>{totalFinalizadas}</strong>
                 </div>
 
-                <div
+                <div onClick={() => navigate("/ordens?status=ENTREGUE")}
                     style={{
                         ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #20c997"
+                        borderLeft: "5px solid #20c997",
+                        cursor: "pointer",
+                        transition: "0.2s"
                     }}
                 >
                     <h3 style={{ marginBottom: "18px" }}>🟦 Entregues</h3>
                     <strong style={styles.cardNumber}>{totalEntregues}</strong>
                 </div>
 
-                <div
+                <div onClick={() => navigate("/ordens?status=CANCELADA")}
                     style={{
                         ...(darkMode ? styles.cardDark : styles.card),
-                        borderLeft: "5px solid #dc3545"
+                        borderLeft: "5px solid #dc3545",
+                        cursor: "pointer",
+                        transition: "0.2s"
                     }}
                 >
                     <h3 style={{ marginBottom: "18px" }}>🔴 Canceladas</h3>
