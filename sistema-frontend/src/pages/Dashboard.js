@@ -114,6 +114,14 @@ function Dashboard() {
         { name: "Fechada antiga", value: contarStatus("FECHADA") }
     ].filter((item) => item.value > 0);
 
+    const totalAbertas = contarStatus("ABERTA");
+    const totalEmAndamento = contarStatus("EM_ANDAMENTO");
+    const totalAguardandoPeca = contarStatus("AGUARDANDO_PECA");
+    const totalFinalizadas = contarStatus("FINALIZADA");
+    const totalEntregues = contarStatus("ENTREGUE");
+    const totalCanceladas = contarStatus("CANCELADA");
+    const totalFechadas = contarStatus("FECHADA");
+
     const dadosFuncionarios = funcionarios.map((funcionario) => {
         const total = ordens.filter(
             (ordem) => ordem.funcionario?.id === funcionario.id
@@ -251,6 +259,43 @@ function Dashboard() {
                 </div>
             </section>
 
+            <section style={styles.cards}>
+                <div style={darkMode ? styles.cardDark : styles.card}>
+                    <h3>🔵 Abertas</h3>
+                    <strong>{totalAbertas}</strong>
+                </div>
+
+                <div style={darkMode ? styles.cardDark : styles.card}>
+                    <h3>🟠 Em andamento</h3>
+                    <strong>{totalEmAndamento}</strong>
+                </div>
+
+                <div style={darkMode ? styles.cardDark : styles.card}>
+                    <h3>🟣 Aguardando peça</h3>
+                    <strong>{totalAguardandoPeca}</strong>
+                </div>
+
+                <div style={darkMode ? styles.cardDark : styles.card}>
+                    <h3>🟢 Finalizadas</h3>
+                    <strong>{totalFinalizadas}</strong>
+                </div>
+
+                <div style={darkMode ? styles.cardDark : styles.card}>
+                    <h3>🟦 Entregues</h3>
+                    <strong>{totalEntregues}</strong>
+                </div>
+
+                <div style={darkMode ? styles.cardDark : styles.card}>
+                    <h3>🔴 Canceladas</h3>
+                    <strong>{totalCanceladas}</strong>
+                </div>
+
+                <div style={darkMode ? styles.cardDark : styles.card}>
+                    <h3>⚫ Fechadas</h3>
+                    <strong>{totalFechadas}</strong>
+                </div>
+            </section>
+
             <section style={styles.chartsGrid}>
                 <div style={darkMode ? styles.panelDark : styles.panel}>
                     <h2>Ordens por Status</h2>
@@ -379,7 +424,7 @@ function Dashboard() {
 const styles = {
     cards: {
         display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
         gap: "20px",
         marginBottom: "25px"
     },
