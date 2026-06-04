@@ -377,7 +377,7 @@ function Dashboard() {
             </section>
 
             <section style={darkMode ? styles.panelDark : styles.panel}>
-                <h2>⚠ Alertas</h2>
+                <h2>⚠ Alertas ({alertasOrdens.length})</h2>
 
                 {alertasOrdens.length === 0 ? (
                     <p>Nenhum alerta no momento.</p>
@@ -385,8 +385,9 @@ function Dashboard() {
                     alertasOrdens.map((ordem) => (
                         <div
                             key={ordem.id}
+                            onClick={() => navigate(`/ordens/${ordem.id}`)}
                             style={{
-                                padding: "12px",
+                                padding: "14px",
                                 marginBottom: "10px",
                                 borderRadius: "10px",
                                 background:
@@ -396,11 +397,17 @@ function Dashboard() {
                                             ? "#fd7e14"
                                             : "#6f42c1",
                                 color: "#fff",
-                                fontWeight: "bold"
+                                cursor: "pointer",
+                                transition: "0.2s"
                             }}
                         >
-                            ⚠ OS #{ordem.id} — {formatarStatus(ordem.status)}
-                            ({ordem.diasAberta} dias)
+                            <div style={{ fontWeight: "bold" }}>
+                                ⚠ OS #{ordem.id} — {ordem.cliente?.nome || "Cliente não informado"}
+                            </div>
+
+                            <div style={{ marginTop: "4px" }}>
+                                {formatarStatus(ordem.status)} há {ordem.diasAberta} dias
+                            </div>
                         </div>
                     ))
                 )}
