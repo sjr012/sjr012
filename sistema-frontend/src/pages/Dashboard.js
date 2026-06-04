@@ -137,6 +137,31 @@ function Dashboard() {
         };
     });
 
+    const calcularDiasAberta = (dataAbertura) => {
+        if (!dataAbertura) return 0;
+
+        const abertura = new Date(dataAbertura);
+        const hoje = new Date();
+
+        const diferenca = hoje - abertura;
+
+        return Math.floor(diferenca / (1000 * 60 * 60 * 24));
+    };
+
+    const alertasOrdens = ordens
+        .filter((ordem) =>
+            ["ABERTA", "EM_ANDAMENTO", "AGUARDANDO_PECA"].includes(ordem.status)
+        )
+        .map((ordem) => ({
+            ...ordem,
+            diasAberta: calcularDiasAberta(ordem.dataAbertura)
+        }))
+        .filter((ordem) =>
+            ordem.diasAberta >= 7 ||
+            ordem.status === "AGUARDANDO_PECA"
+        )
+        .sort((a, b) => b.diasAberta - a.diasAberta);
+
     const obterEstiloStatus = (status) => {
 
         switch (status) {
@@ -349,6 +374,36 @@ function Dashboard() {
                     <strong style={styles.cardNumber}>{totalCanceladas}</strong>
                 </div>
 
+            </section>
+
+            <section style={darkMode ? styles.panelDark : styles.panel}>
+                <h2>⚠ Alertas</h2>
+
+                {alertasOrdens.length === 0 ? (
+                    <p>Nenhum alerta no momento.</p>
+                ) : (
+                    alertasOrdens.map((ordem) => (
+                        <div
+                            key={ordem.id}
+                            style={{
+                                padding: "12px",
+                                marginBottom: "10px",
+                                borderRadius: "10px",
+                                background:
+                                    ordem.diasAberta >= 30
+                                        ? "#dc3545"
+                                        : ordem.diasAberta >= 15
+                                            ? "#fd7e14"
+                                            : "#6f42c1",
+                                color: "#fff",
+                                fontWeight: "bold"
+                            }}
+                        >
+                            ⚠ OS #{ordem.id} — {formatarStatus(ordem.status)}
+                            ({ordem.diasAberta} dias)
+                        </div>
+                    ))
+                )}
             </section>
 
             <section style={styles.chartsGrid}>
