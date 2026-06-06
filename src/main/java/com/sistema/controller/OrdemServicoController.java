@@ -76,9 +76,22 @@ public class OrdemServicoController {
 
     @PostMapping
     public OrdemServico abrir(@RequestBody OrdemServico ordem) {
-        ordem.setStatus("ABERTA");
+
         ordem.setDataAbertura(LocalDateTime.now());
-        return repo.save(ordem);
+        ordem.setStatus("ABERTA");
+
+        OrdemServico ordemSalva = repo.save(ordem);
+
+        HistoricoOrdem historico = new HistoricoOrdem();
+
+        historico.setOrdem(ordemSalva);
+        historico.setAcao("CRIACAO_OS");
+        historico.setUsuario("Sistema");
+        historico.setDataHora(LocalDateTime.now());
+
+        historicoRepository.save(historico);
+
+        return ordemSalva;
     }
 
     @PutMapping("/{id}")
