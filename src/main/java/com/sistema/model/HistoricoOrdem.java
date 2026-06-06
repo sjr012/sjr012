@@ -2,6 +2,7 @@ package com.sistema.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class HistoricoOrdem {
@@ -22,6 +23,7 @@ public class HistoricoOrdem {
 
     @ManyToOne
     @JoinColumn(name = "ordem_id")
+    @JsonIgnore
     private OrdemServico ordem;
 
     public HistoricoOrdem() {
