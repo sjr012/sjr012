@@ -3,6 +3,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import QRCode from "qrcode";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import API_URL, {
     getAuthHeaders,
@@ -19,12 +20,15 @@ function OrdemDetalhe() {
 
     const [anexos, setAnexos] = useState([]);
 
+    const [historico, setHistorico] = useState([]);
+
     const darkMode =
         localStorage.getItem("tema") === "dark";
 
     useEffect(() => {
         carregarOrdem();
         carregarAnexos();
+        carregarHistorico();
     }, []);
 
     const carregarOrdem = async () => {
@@ -61,6 +65,26 @@ function OrdemDetalhe() {
         const data = await response.json();
 
         setAnexos(data);
+    };
+
+    const carregarHistorico = async () => {
+        try {
+            const response = await fetch(`${API_URL}/ordens/${id}/historico`, {
+                headers: getAuthHeaders()
+            });
+
+            if (!response.ok) {
+                toast.error("Erro ao carregar histórico.");
+                return;
+            }
+
+            const data = await response.json();
+
+            setHistorico(data);
+
+        } catch (error) {
+            toast.error("Erro ao carregar histórico.");
+        }
     };
 
     const visualizarAnexo = async (anexo) => {
@@ -175,6 +199,34 @@ function OrdemDetalhe() {
 
             default:
                 return status;
+        }
+    };
+
+    const obterCorStatus = (status) => {
+        switch (status) {
+            case "ABERTA":
+                return "#0d6efd";
+
+            case "EM_ANDAMENTO":
+                return "#fd7e14";
+
+            case "AGUARDANDO_PECA":
+                return "#6f42c1";
+
+            case "FINALIZADA":
+                return "#198754";
+
+            case "ENTREGUE":
+                return "#20c997";
+
+            case "CANCELADA":
+                return "#dc3545";
+
+            case "FECHADA":
+                return "#6c757d";
+
+            default:
+                return "#0d6efd";
         }
     };
 
@@ -552,43 +604,76 @@ function OrdemDetalhe() {
                     Histórico da Ordem
                 </h2>
 
-                <div style={{
-                    marginTop: "20px"
-                }}>
+                <div style={{ marginTop: "20px" }}>
 
                     <div style={styles.timelineItem}>
                         <div style={styles.timelineDot} />
 
                         <div>
-                            <strong>
-                                Ordem aberta
-                            </strong>
-
-                            <p>
-                                {formatarDataHora(ordem.dataAbertura)}
-                            </p>
+                            <strong>Ordem aberta</strong>
+                            <p>{formatarDataHora(ordem.dataAbertura)}</p>
                         </div>
                     </div>
 
-                    {ordem.status === "FECHADA" && (
+                    {historico.map((item) => (
+                        <div
+                            key={item.id}
+                            style={{
+                                ...styles.timelineItem,
+                                alignItems: "flex-start"
+                            }}
+                        >
+                            <div
+                                style={{
+                                    ...styles.timelineDot,
+                                    background: obterCorStatus(item.statusNovo),
+                                    marginTop: "6px"
+                                }}
+                            />
 
-                        <div style={styles.timelineItem}>
-                            <div style={{
-                                ...styles.timelineDot,
-                                background: "#198754"
-                            }} />
-
-                            <div>
+                            <div
+                                style={{
+                                    background: darkMode ? "#111827" : "#f8fafc",
+                                    border: darkMode
+                                        ? "1px solid #374151"
+                                        : "1px solid #e5e7eb",
+                                    borderRadius: "12px",
+                                    padding: "14px 16px",
+                                    width: "100%"
+                                }}
+                            >
                                 <strong>
-                                    Ordem finalizada
+                                    Status alterado
                                 </strong>
 
-                                <p>
-                                    {formatarDataHora(ordem.dataFechamento)}
+                                <p style={{ margin: "8px 0 4px" }}>
+                                    <span
+                                        style={{
+                                            color: obterCorStatus(item.statusAnterior),
+                                            fontWeight: "bold"
+                                        }}
+                                    >
+                                        {formatarStatus(item.statusAnterior)}
+                                    </span>
+
+                                    {" → "}
+
+                                    <span
+                                        style={{
+                                            color: obterCorStatus(item.statusNovo),
+                                            fontWeight: "bold"
+                                        }}
+                                    >
+                                        {formatarStatus(item.statusNovo)}
+                                    </span>
                                 </p>
+
+                                <small style={{ opacity: 0.75 }}>
+                                    🕒 {formatarDataHora(item.dataHora)}
+                                </small>
                             </div>
                         </div>
-                    )}
+                    ))}
 
                 </div>
 
