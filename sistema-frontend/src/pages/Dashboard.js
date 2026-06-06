@@ -66,7 +66,6 @@ function Dashboard() {
                 if (ordensRes.ok) {
                     const data = await ordensRes.json();
                     setOrdens(data.content || []);
-                    console.log(ordens);
                 }
 
                 if (clientesRes.ok) {
@@ -137,6 +136,40 @@ function Dashboard() {
             total
         };
     });
+
+    const meses = [
+        "Jan",
+        "Fev",
+        "Mar",
+        "Abr",
+        "Mai",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Set",
+        "Out",
+        "Nov",
+        "Dez"
+    ];
+
+    const mapaMeses = {};
+
+    ordens.forEach((ordem) => {
+        if (!ordem.dataAbertura) return;
+
+        const data = new Date(ordem.dataAbertura);
+
+        const mes = meses[data.getMonth()];
+
+        mapaMeses[mes] = (mapaMeses[mes] || 0) + 1;
+    });
+
+    const dadosMensais = Object.entries(mapaMeses).map(
+        ([mes, total]) => ({
+            mes,
+            total
+        })
+    );
 
     const calcularDiasAberta = (dataAbertura) => {
         if (!dataAbertura) return 0;
@@ -460,6 +493,20 @@ function Dashboard() {
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
+
+                <div style={darkMode ? styles.panelDark : styles.panel}>
+                    <h2>Evolução Mensal</h2>
+
+                    <ResponsiveContainer width="100%" height={260}>
+                        <BarChart data={dadosMensais}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="mes" />
+                            <YAxis allowDecimals={false} />
+                            <Tooltip />
+                            <Bar dataKey="total" fill="#1e88e5" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
             </section>
 
             <section style={darkMode ? styles.panelDark : styles.panel}>
@@ -571,7 +618,7 @@ const styles = {
 
     chartsGrid: {
         display: "grid",
-        gridTemplateColumns: "1fr 1fr",
+        gridTemplateColumns: "repeat(auto-fit, minmax(450px, 1fr))",
         gap: "20px",
         marginBottom: "25px"
     },

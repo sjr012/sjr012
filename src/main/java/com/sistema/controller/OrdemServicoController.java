@@ -6,6 +6,8 @@ import com.sistema.model.OrdemServico;
 import com.sistema.repository.ClienteRepository;
 import com.sistema.repository.FuncionarioRepository;
 import com.sistema.repository.OrdemServicoRepository;
+import com.sistema.model.HistoricoOrdem;
+import com.sistema.repository.HistoricoOrdemRepository;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -25,14 +27,17 @@ public class OrdemServicoController {
     private final OrdemServicoRepository repo;
     private final ClienteRepository clienteRepository;
     private final FuncionarioRepository funcionarioRepository;
+    private final HistoricoOrdemRepository historicoRepository;
 
     public OrdemServicoController(
             OrdemServicoRepository repo,
             ClienteRepository clienteRepository,
-            FuncionarioRepository funcionarioRepository) {
+            FuncionarioRepository funcionarioRepository,
+            HistoricoOrdemRepository historicoRepository) {
         this.repo = repo;
         this.clienteRepository = clienteRepository;
         this.funcionarioRepository = funcionarioRepository;
+        this.historicoRepository = historicoRepository;
     }
 
     @GetMapping
@@ -56,6 +61,17 @@ public class OrdemServicoController {
         }
 
         return ResponseEntity.ok(ordem);
+    }
+
+    @GetMapping("/{id}/historico")
+    public ResponseEntity<?> buscarHistorico(@PathVariable("id") Long id) {
+
+        if (!repo.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(
+                historicoRepository.findByOrdemIdOrderByDataHoraDesc(id));
     }
 
     @PostMapping
@@ -115,6 +131,8 @@ public class OrdemServicoController {
             return ResponseEntity.notFound().build();
         }
 
+        String statusAnterior = ordem.getStatus();
+
         if (dados.getStatus() == null || dados.getStatus().isBlank()) {
             return ResponseEntity.badRequest().body("Status inválido");
         }
@@ -134,7 +152,18 @@ public class OrdemServicoController {
             ordem.setDataFechamento(null);
         }
 
-        return ResponseEntity.ok(repo.save(ordem));
+        HistoricoOrdem historico = new HistoricoOrdem(
+                "ALTERACAO_STATUS",
+                statusAnterior,
+                ordem.getStatus(),
+                "Sistema",
+                ordem);
+
+        OrdemServico ordemSalva = repo.save(ordem);
+
+        historicoRepository.save(historico);
+
+        return ResponseEntity.ok(ordemSalva);
     }
 
     @PutMapping("/{id}/fechar")
