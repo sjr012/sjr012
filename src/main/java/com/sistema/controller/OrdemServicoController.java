@@ -105,20 +105,57 @@ public class OrdemServicoController {
             return ResponseEntity.notFound().build();
         }
 
-        ordem.setDescricao(dados.getDescricao());
+        String descricaoAnterior = ordem.getDescricao();
+
+        if (dados.getDescricao() != null &&
+                !dados.getDescricao().equals(descricaoAnterior)) {
+
+            HistoricoOrdem historico = new HistoricoOrdem(
+                    "ALTERACAO_DESCRICAO",
+                    descricaoAnterior,
+                    dados.getDescricao(),
+                    "Sistema",
+                    ordem);
+
+            historicoRepository.save(historico);
+
+            ordem.setDescricao(dados.getDescricao());
+        }
 
         if (dados.getStatus() != null && !dados.getStatus().isBlank()) {
             ordem.setStatus(dados.getStatus());
         }
 
-        if (dados.getCliente() != null && dados.getCliente().getId() != null) {
+        String clienteAnterior = ordem.getCliente() != null
+                ? ordem.getCliente().getNome()
+                : "Sem cliente";
+
+        if (dados.getCliente() != null &&
+                dados.getCliente().getId() != null) {
 
             Cliente cliente = clienteRepository
                     .findById(dados.getCliente().getId())
                     .orElse(null);
 
+            if (cliente != null &&
+                    !cliente.getNome().equals(clienteAnterior)) {
+
+                HistoricoOrdem historico = new HistoricoOrdem(
+                        "ALTERACAO_CLIENTE",
+                        clienteAnterior,
+                        cliente.getNome(),
+                        "Sistema",
+                        ordem);
+
+                historicoRepository.save(historico);
+            }
+
             ordem.setCliente(cliente);
         }
+
+        String funcionarioAnterior = ordem.getFuncionario() != null
+                ? ordem.getFuncionario().getNome()
+                : "Sem funcionário";
 
         if (dados.getFuncionario() != null &&
                 dados.getFuncionario().getId() != null) {
@@ -126,6 +163,19 @@ public class OrdemServicoController {
             Funcionario funcionario = funcionarioRepository
                     .findById(dados.getFuncionario().getId())
                     .orElse(null);
+
+            if (funcionario != null &&
+                    !funcionario.getNome().equals(funcionarioAnterior)) {
+
+                HistoricoOrdem historico = new HistoricoOrdem(
+                        "ALTERACAO_FUNCIONARIO",
+                        funcionarioAnterior,
+                        funcionario.getNome(),
+                        "Sistema",
+                        ordem);
+
+                historicoRepository.save(historico);
+            }
 
             ordem.setFuncionario(funcionario);
         }
